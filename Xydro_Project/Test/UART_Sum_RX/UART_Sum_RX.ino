@@ -1,6 +1,5 @@
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX, TX
-SoftwareSerial mySerial_(4, 5); // RX, TX
 
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
@@ -10,31 +9,21 @@ boolean Loop = true;
 void setup() {
   Serial.begin(19200);
   mySerial.begin(19200);
-  mySerial_.begin(19200);
 }
 
 int time = 0;
-boolean A_Check = true;
-boolean B_Check = false;
 
 void loop() {
-  if (A_Check)
     A_UART_Update();
-  if (B_Check)
     B_UART_Update();
 }
 
 void B_UART_Update() {
-  if (mySerial_.available()) {
+  if (Serial.available()) {
     for (int i = 0; i < 5; i++) {
-      UART[i] = mySerial_.read();
+      UART[i] = Serial.read();
     }
   }
-  if(!(mySerial_.available()))
-    A_Check = true;
-    
-  B_Check = false;
-  
   Serial.print(" / ");
   for (int i = 0; i < 5; i++) {
     Serial.print(UART[i]); Serial.print(" ");
@@ -79,12 +68,6 @@ void A_UART_Update() {
     buf[3] = 0;
     buf[4] = 129;
   }
-  
-  
-  if(!(mySerial.available()))
-    B_Check = true;
-  
-   A_Check = false;
 
   Serialprint();
 
