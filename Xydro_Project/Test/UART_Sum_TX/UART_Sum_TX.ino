@@ -14,13 +14,9 @@ void setup() {
 }
 
 int time = 0;
-boolean A_Start = true;
-boolean B_Start = false;
 
 void loop() {
-  if (A_Start)
     A_UART_Update();
-  if (B_Start)
     B_UART_Update();
 }
 
@@ -28,11 +24,6 @@ void B_UART_Update() {
   for (int i = 0; i < 5; i++) {
     mySerial_.write(UART[i]);
   }
-  A_Start = true;
-  B_Start = false;
-  
-  mySerial_.end();
-  mySerial_.begin(19200);
 }
 
 void A_UART_Update() {
@@ -82,8 +73,6 @@ void A_UART_Update() {
   }
   Serialreset();
   
-  A_Start = false;
-  B_Start = true;
 }
 
 void Serialreset() {

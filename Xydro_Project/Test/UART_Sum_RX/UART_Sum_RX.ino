@@ -14,14 +14,13 @@ void setup() {
 }
 
 int time = 0;
-boolean check = false;
-boolean A_Start = true;
-boolean B_Start = false;
+boolean A_Check = true;
+boolean B_Check = false;
 
 void loop() {
-  if (A_Start)
+  if (A_Check)
     A_UART_Update();
-  if (B_Start)
+  if (B_Check)
     B_UART_Update();
 }
 
@@ -29,24 +28,18 @@ void B_UART_Update() {
   if (mySerial_.available()) {
     for (int i = 0; i < 5; i++) {
       UART[i] = mySerial_.read();
-      delayMicroseconds(50);
     }
-    check = true;
   }
-  //if (check) {
-    Serial.print(" / ");
-    for (int i = 0; i < 5; i++) {
-      Serial.print(UART[i]); Serial.print(" ");
-    }
-    Serial.println();
-    check = false;
-  //}
+  if(!(mySerial_.available()))
+    A_Check = true;
+    
+  B_Check = false;
   
-  mySerial_.end();
-  mySerial_.begin(19200);
-  
-  A_Start = true;
-  B_Start = false;
+  Serial.print(" / ");
+  for (int i = 0; i < 5; i++) {
+    Serial.print(UART[i]); Serial.print(" ");
+  }
+  Serial.println();
 }
 
 void A_UART_Update() {
@@ -86,6 +79,12 @@ void A_UART_Update() {
     buf[3] = 0;
     buf[4] = 129;
   }
+  
+  
+  if(!(mySerial.available()))
+    B_Check = true;
+  
+   A_Check = false;
 
   Serialprint();
 
@@ -95,9 +94,6 @@ void A_UART_Update() {
     }
   }
   Serialreset();
-  
-  A_Start = false;
-  B_Start = true;
 }
 
 void Serialreset() {
