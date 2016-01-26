@@ -48,7 +48,7 @@ void UART_Update() {
     buf[4] = 129;
   }
 
-  //Serialprint();
+  Serialprint();
 
   if (!Loop) {
     for (int i = 0; i < 8; i++) {
