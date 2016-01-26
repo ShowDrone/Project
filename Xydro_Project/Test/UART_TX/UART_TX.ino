@@ -13,8 +13,8 @@ void loop() {
   if (sw == 'K') {
     for(int i=0;i<8;i++) {
       mySerial.write(buf[i]);
-      delay(1);
     }
     Serial.println("Send Succesful");
   }
+    delay(1);
 }
