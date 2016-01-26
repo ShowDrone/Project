@@ -1,5 +1,7 @@
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX, TX
+#include<AltSoftSerial.h>
+AltSoftSerial altSerial;
 
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
@@ -9,6 +11,7 @@ boolean Loop = true;
 void setup() {
   Serial.begin(19200);
   mySerial.begin(19200);
+  altSerial.begin(19200);
 }
 
 int time = 0;
@@ -20,7 +23,7 @@ void loop() {
 
 void B_UART_Update() {
   for (int i = 0; i < 5; i++) {
-    Serial.write(UART[i]);
+   altSerial.write(UART[i]);
   }
 }
 

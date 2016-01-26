@@ -1,5 +1,7 @@
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX, TX
+#include<AltSoftSerial.h>
+AltSoftSerial altSerial;
 
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
@@ -9,6 +11,7 @@ boolean Loop = true;
 void setup() {
   Serial.begin(19200);
   mySerial.begin(19200);
+  altSerial.begin(19200);
 }
 
 int time = 0;
@@ -18,18 +21,6 @@ void loop() {
     B_UART_Update();
 }
 
-void B_UART_Update() {
-  if (Serial.available()) {
-    for (int i = 0; i < 5; i++) {
-      UART[i] = Serial.read();
-    }
-  }
-  Serial.print(" / ");
-  for (int i = 0; i < 5; i++) {
-    Serial.print(UART[i]); Serial.print(" ");
-  }
-  Serial.println();
-}
 
 void A_UART_Update() {
   if (mySerial.available()) {
@@ -77,6 +68,20 @@ void A_UART_Update() {
     }
   }
   Serialreset();
+}
+
+
+void B_UART_Update() {
+  if (altSerial.available()) {
+    for (int i = 0; i < 5; i++) {
+      UART[i] = altSerial.read();
+    }
+  }
+  Serial.print(" / ");
+  for (int i = 0; i < 5; i++) {
+    Serial.print(UART[i]); Serial.print(" ");
+  }
+  Serial.println();
 }
 
 void Serialreset() {
