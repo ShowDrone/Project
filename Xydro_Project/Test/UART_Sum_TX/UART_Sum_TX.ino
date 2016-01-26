@@ -14,9 +14,15 @@ void setup() {
   altSerial.begin(19200);
 }
 
-int time = 0;
+int time_pre = 0;
 
 void loop() {
+  
+    int time = millis() - time_pre;
+    time_pre = millis();
+    Serial.print(time); Serial.print(" ");
+      
+  
     A_UART_Update();
     B_UART_Update();
 }
