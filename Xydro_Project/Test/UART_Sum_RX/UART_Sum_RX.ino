@@ -41,6 +41,10 @@ void B_UART_Update() {
     Serial.println();
     check = false;
   //}
+  
+  mySerial_.end();
+  mySerial_.begin(19200);
+  
   A_Start = true;
   B_Start = false;
 }

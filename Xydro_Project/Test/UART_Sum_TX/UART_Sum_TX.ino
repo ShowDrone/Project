@@ -30,6 +30,9 @@ void B_UART_Update() {
   }
   A_Start = true;
   B_Start = false;
+  
+  mySerial_.end();
+  mySerial_.begin(19200);
 }
 
 void A_UART_Update() {
@@ -70,7 +73,7 @@ void A_UART_Update() {
     buf[4] = 129;
   }
 
-  Serialprint();
+  //Serialprint();
 
   if (!Loop) {
     for (int i = 0; i < 8; i++) {
