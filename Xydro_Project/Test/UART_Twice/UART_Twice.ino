@@ -10,15 +10,7 @@ void setup() {
   mySerial.begin(19200);
 }
 
-int time = 0;
 void loop() {
-  if(time+5<millis()) {
-    UART_Update();
-    time = millis();
-  }
-}
-
-void UART_Update() {
   if (mySerial.available()) {
     here:
     for (int j = 0; j < 8; j++) {
@@ -69,6 +61,8 @@ void UART_Update() {
 void Serialreset() {
   mySerial.end();
   mySerial.begin(19200);
+  Serial.end();
+  Serial.begin(19200);
 }
 
 void Serialprint() {
