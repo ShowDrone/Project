@@ -1,5 +1,5 @@
 #include<SoftwareSerial.h>
-SoftwareSerial mySerial(2, 3); // RX, TX
+SoftwareSerial mySerial(4, 5); // RX, TX
 
 int buf[8] = {0, };
 
