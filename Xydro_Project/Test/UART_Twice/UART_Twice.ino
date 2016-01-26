@@ -48,7 +48,7 @@ void loop() {
     buf[4] = 129;
   }
 
-  //Serialprint();
+  Serialprint();
 
   if (!Loop) {
     for (int i = 0; i < 8; i++) {
@@ -56,6 +56,7 @@ void loop() {
     }
   }
   Serialreset();
+  delay(5);
 }
 
 void Serialreset() {
