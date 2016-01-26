@@ -1,33 +1,30 @@
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX, TX
+SoftwareSerial mySerial_(4, 5); // RX, TX
 
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
-int UART[4] = {0, };
+int UART[5] = {0, };
 boolean Loop = true;
 
 void setup() {
   Serial.begin(19200);
   mySerial.begin(19200);
+  mySerial_.begin(19200);
 }
 
 int time = 0;
 boolean check = false;
 
 void loop() {
-  if (time + 2 < millis()) {
-    A_UART_Update();
-    time = millis();
-  }
-  delay(1);
+  A_UART_Update();
   B_UART_Update();
-
 }
 
 void B_UART_Update() {
-  if (mySerial.available()) {
+  if (mySerial_.available()) {
     for (int i = 0; i < 5; i++) {
-      UART[i] = mySerial.read();
+      UART[i] = mySerial_.read();
     }
     check = true;
   }
@@ -100,4 +97,5 @@ void Serialprint() {
   for (int i = 1; i < 5; i++) {
     Serial.print(" "); Serial.print(buf[i]); Serial.print(" ");
   }
+  Serial.println();
 }

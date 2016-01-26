@@ -1,5 +1,6 @@
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3); // RX, TX
+SoftwareSerial mySerial_(4, 5); // RX, TX
 
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
@@ -9,21 +10,20 @@ boolean Loop = true;
 void setup() {
   Serial.begin(19200);
   mySerial.begin(19200);
+  mySerial_.begin(19200);
 }
 
 int time = 0;
 
 void loop() {
-  if (time + 2 < millis()) {
-    A_UART_Update();
-    time = millis();
-  }
+  A_UART_Update();
   B_UART_Update();
 }
 
 void B_UART_Update() {
   for(int i = 0; i<5;i++) {
-    mySerial.write(UART[i]);
+    mySerial_.write(UART[i]);
+    delayMicroseconds(100);
   }
 }
 
