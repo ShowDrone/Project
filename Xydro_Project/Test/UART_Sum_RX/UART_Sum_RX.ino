@@ -14,15 +14,26 @@ void setup() {
   altSerial.begin(19200);
 }
 
+boolean A_Check = true;
+boolean B_Check = false;
+
 int time_pre = 0;
 
 void loop() {
-    int time = millis() - time_pre;
-    time_pre = millis();
-    Serial.print(time); Serial.print(" ");
-      
+  int time = millis() - time_pre;
+  time_pre = millis();
+  Serial.print(time); Serial.print(" ");
+
+  if (A_Check) {
     A_UART_Update();
+    A_Check = false;
+    B_Check = true;
+  }
+  if (B_Check) {
     B_UART_Update();
+    A_Check = true;
+    B_Check = false;
+  }
 }
 
 

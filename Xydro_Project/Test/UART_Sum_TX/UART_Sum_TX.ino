@@ -5,7 +5,7 @@ AltSoftSerial altSerial;
 
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
-int UART[5] = {0, 1, 2, 3, 4};
+int UART[5] = {50, 60, 70, 80, 90};
 boolean Loop = true;
 
 void setup() {
@@ -30,6 +30,7 @@ void loop() {
 void B_UART_Update() {
   for (int i = 0; i < 5; i++) {
    altSerial.write(UART[i]);
+   delayMicroseconds(6);
   }
 }
 
