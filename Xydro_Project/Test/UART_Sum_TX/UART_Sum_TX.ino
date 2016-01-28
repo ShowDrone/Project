@@ -3,7 +3,7 @@ SoftwareSerial mySerial(2, 3); // RX, TX
 #include<AltSoftSerial.h>
 AltSoftSerial altSerial;
 
-int buf[8] = {0,};
+int/ buf[8] = {0,};
 int Lastbuf[8] = {0,};
 int UART[5] = {50, 60, 70, 80, 90};
 boolean Loop = true;
