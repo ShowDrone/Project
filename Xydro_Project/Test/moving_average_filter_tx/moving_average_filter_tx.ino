@@ -20,7 +20,7 @@ float DT = 0.01;
 
 void setup() {
   Serial.begin(19200);
-  altSerial.begin(19200);
+  altSerial.begin(115200);
   Wire.begin();
   accelGyroMag.initialize();
 }
@@ -45,12 +45,19 @@ void loop() {
   pitch = (0.98 * (pitch + (pitchGyro * DT))) + (0.02 * pitchAcc);
   roll = (0.98 * (roll + (rollGyro * DT))) + (0.02 * rollAcc);
   yaw = (0.98 * (yaw + (yawGyro * DT))) + (0.02 * rollAcc);
-  
-  altSerial.write(roll);
-  altSerial.write(pitch);
-  altSerial.write(yaw);
-  
-  //Serial.print("  pitch: "); Serial.print(pitch);
-  //Serial.print(" roll: "); Serial.print(roll);
-  //Serial.print(" yaw: "); Serial.println(yaw);
+
+  char check = Serial.read();
+  if (check == 'K') {
+    while (1) {
+      int incheck = Serial.read();
+      if (incheck == 'K')
+        break;
+      altSerial.write(1.0);
+      delayMicroseconds(2);
+      altSerial.write(2.0);
+      delayMicroseconds(2);
+      altSerial.write(3.0);
+      delayMicroseconds(2);
+    }
+  }
 }
