@@ -2,7 +2,6 @@
 AltSoftSerial altSerial;
 
 void Transmiter_init() {
-  
   altSerial.begin(19200);
 }
 void Transmiter_Update() {
