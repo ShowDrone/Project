@@ -1,3 +1,22 @@
+/*
+
+Date    :  2015-01-15
+Maker   :  Lee SeungHyun (Blog Address : http://dkwltmdgus.blog.me)
+MCU     :  Arduino Mega
+Purpose :  9Byte / Real number SPI Commnuication Test
+Please do not change this section
+
+아래 소스는 실수 데이터를 3바이트로 변환하는 소스입니다.
+SPI 통신 시 1바이트(0~255) 밖에 전달을 못하는 단점을 보완하기 위해
+제작한 소스이므로 300.5라는 소스가 있다고 가정하고 예를 들자면
+변수명 rest에 0.5, add에 45, multiple에 1이라는 값이 대입됩니다.
+이걸 다시 원래 데이터로 변환하자면 add+rest+multiple*255 하시면
+원래 데이터인 300.5가 나옵니다.
+
+이 소스를 SPI용으로 변경하셔서 사용하시면 됩니다.
+
+*/
+
 
 void setup() {
   Serial.begin(9600);
