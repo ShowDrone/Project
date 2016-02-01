@@ -10,7 +10,7 @@ BLDC_A 10
 BLDC_B 11
 
 
-//////////// Arduino B /////////////
+///////////// Arduino B /////////////
   Test Board : Arduino Uno
 */
 
