@@ -28,7 +28,7 @@ void AccelGyro_Update() {
   //가속도 계산
   pitchAcc = atan2(AcY, AcZ) * 180 / PI; // 라디안 to 각도값
   rollAcc = -atan2(AcX, AcZ) * 180 / PI;
-  yawAcc = atan2(AcX,AcY) * 180 / PI;
+  yawAcc = atan2(AcX, AcY) * 180 / PI;
 
   //자이로 계산
   pitchGyro = GyX / 131.07; // 16비트 값 to 250'/sec
@@ -62,7 +62,10 @@ void AccelGyro_Update() {
   //Serial.print(" yaw: ");
   //Serial.println(yaw);
 
+  //AxisPrint();
+}
 
+void AxisPrint() {
   Serial.print(" pitch: "); Serial.print(pitch);
   Serial.print(" roll: "); Serial.print(roll);
   Serial.print(" yaw: "); Serial.println(yaw);
