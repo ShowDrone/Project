@@ -57,14 +57,7 @@ void AccelGyro_Update() {
   //double XH = MgX*cos(pitch)+MgY*sin(roll)*sin(pitch)-MgZ*cos(roll)*sin(pitch);
   //double YH = MgY*cos(roll)+MgZ*sin(roll);
 
-  //yaw = atan2(YH,XH);
-  //yaw = atan2((double)MgY,(double)MgX)*180/PI;
-
-  //Serial.print(" yaw: ");
-  //Serial.println(yaw);
-
-  //Serial.print(" yaw: ");
-  //Serial.println(yaw);
+  
 
   //AxisPrint();
 }
