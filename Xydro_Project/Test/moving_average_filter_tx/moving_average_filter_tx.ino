@@ -49,15 +49,18 @@ void loop() {
   char check = Serial.read();
   if (check == 'K') {
     while (1) {
-      int incheck = Serial.read();
-      if (incheck == 'K')
-        break;
+      char incheck = Serial.read();
+      altSerial.(1.0);
       altSerial.write(1.0);
       delayMicroseconds(2);
       altSerial.write(2.0);
       delayMicroseconds(2);
       altSerial.write(3.0);
-      delayMicroseconds(2);
+      
+      delay(100);
+      if (incheck == 'K')
+        break;
+      
     }
   }
 }
