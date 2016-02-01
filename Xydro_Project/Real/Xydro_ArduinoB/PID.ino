@@ -1,6 +1,6 @@
 
-#define SPEED_MAX 2000 //예시
-#define SPEED_MIN 1000
+#define SPEED_MAX 255 //예시
+#define SPEED_MIN 0
 #define XY_MIN -30 // 상보필터 값에 맞게 셋팅
 #define XY_MAX 30 // 
 #define ROLL_MIN -30
@@ -15,9 +15,6 @@
 #define BLDC_A 10
 #define BLDC_B 11
 
-#include<Servo.h>
-Servo motDC1_A; Servo motDC1_B; Servo motDC2_A; Servo motDC2_B;
-Servo motBLDC_A; Servo motBLDC_B;
 double const XY_P = 0.85, XY_I = 0.1, XY_D = 0.15; // PID 게인값으로 테스트를 통해 값 바꿔나가야 함
 double const ROLL_P = 1, ROLL_I = 0.05, ROLL_D = 1;
 double const YAW_P = 1, YAW_I = 0.05, YAW_D = 1;
@@ -41,15 +38,8 @@ Buf1  Roll값      Buf2 Pitch값       Buf3 Speed값       Buf4 Yaw값
 */
 
 int time = millis();
-int buf[4] = {0, };
 
-void PID_Setup() {
-  motDC1_A.attach(DC1_A);
-  motDC1_B.attach(DC1_B);
-  motDC2_A.attach(DC2_A);
-  motDC2_B.attach(DC2_B);
-  motBLDC_A.attach(BLDC_A);
-  motBLDC_B.attach(BLDC_B);
+void PID_init() {
   pinMode(DC1_B, OUTPUT);
   pinMode(DC1_A, OUTPUT);
   pinMode(DC2_B, OUTPUT);
@@ -60,13 +50,19 @@ void PID_Setup() {
   MOT_Stop();
 }
 
+int uartTime = 0;
 
 void PID_Update() {
+  
+  if (uartTime + 5 < millis()) {
+    Control_UART_Update();
+    uartTime = millis();
+  }
 
   xy_Ctl = map(buf[2], 88, 168, XY_MIN, XY_MAX);
   roll_Ctl = map(buf[1], 88, 168, ROLL_MIN, ROLL_MAX);
   yaw_Ctl = map(buf[4], 70, 176, YAW_MIN, YAW_MAX);
-  motSpeed = map(buf[3], 0, 255, SPEED_MIN, SPEED_MAX);
+  motSpeed = buf[3];
 
   if (xy_Ctl < XY_MIN || xy_Ctl > XY_MAX) {
     xy_Ctl = xy_Ctl_Last;
@@ -145,8 +141,7 @@ void PID_Update() {
 
   //얼마나 기울지 파악, PID제어
 
-  Limit_Speed(&BLDC2_S);
-  Limit_Speed(&BLDC1_S);
+  Limit_Speed(&motSpeed);
 
   if (motSpeed < 1050) {
     level = true;
@@ -193,8 +188,8 @@ inline void MOT_Update() {
   //analogWrite(DC1_B,DC1S_B);
   analogWrite(DC2_A,DC2S_A);
   //analogWrite(DC2_B,DC2S_B);
-  //motBLDC_A.writeMicroseconds(motSpeed);
-  //motBLDC_B.writeMicroseconds(motSpeed);
+  //analogWrite(BLDC_A,motSpeed);
+  //analogWrite(BLDC_B,motSpeed);
 }
 
 void MOT_Stop() {

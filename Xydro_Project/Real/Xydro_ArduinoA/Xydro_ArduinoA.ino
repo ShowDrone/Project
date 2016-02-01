@@ -13,11 +13,13 @@ DC4_B 9
   불의로 통신 끊겼을 시 호버링 유지하는 기능
 */
 void setup() {
-  UART_Setup();
   Serial.begin(19200);
-  AccelGyro_Setup();
-  SPI_Setup();
-  PID_Setup();
+  
+  AccelGyro_init();
+  Control_UART_init();
+  Status_UART_init();
+  PID_init();
+  
   Serial.println("Start");
   delay(500);
 }
@@ -29,8 +31,9 @@ void loop() {
   int time = millis() - time_pre;
   time_pre = millis();
   Serial.print("time: " + (String)time);
-  
-  SPI_Update();
+ 
+ 
+  Status_UART_Update();
   PID_Update();
 }
 

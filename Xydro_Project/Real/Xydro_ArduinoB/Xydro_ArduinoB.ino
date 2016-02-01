@@ -15,12 +15,21 @@ BLDC_B 11
 */
 
 void setup() {
-  AccelGyro_Setup();
-  SPI_Setup();
-  PID_Setup();
+  AccelGyro_init();
+  Control_UART_init();
+  Transmiter_init();
+  PID_init();
 }
 
+int time_pre = 0;
+
 void loop() {
-  SPI_Update();
+  
+  int time = millis() - time_pre;
+  time_pre = millis();
+  Serial.print("time: " + (String)time);
+  
+  
+  Transmiter_Update();
   PID_Update();
 }

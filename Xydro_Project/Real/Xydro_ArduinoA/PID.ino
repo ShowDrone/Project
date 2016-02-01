@@ -20,9 +20,6 @@
 #define DC4_B 10
 
 
-#include<Servo.h>
-Servo motDC3_A; Servo motDC3_B; Servo motDC4_A; Servo motDC4_B;
-Servo motBLDC_A; Servo motBLDC_B;
 double const XY_P = 0.85, XY_I = 0.1, XY_D = 0.15; // PID 게인값으로 테스트를 통해 값 바꿔나가야 함
 double const ROLL_P = 1, ROLL_I = 0.05, ROLL_D = 1;
 double const YAW_P = 1, YAW_I = 0.05, YAW_D = 1;
@@ -45,13 +42,8 @@ Buf1  Roll값      Buf2 Pitch값       Buf3 Speed값       Buf4 Yaw값
 */
 
 int time = millis();
-int buf[8] = {0,};
 
-void PID_Setup() {
-  motDC3_A.attach(DC3_A);
-  motDC3_B.attach(DC3_B);
-  motDC4_A.attach(DC4_A);
-  motDC4_B.attach(DC4_B);
+void PID_init() {
   pinMode(DC3_A, OUTPUT);
   pinMode(DC3_B, OUTPUT);
   pinMode(DC4_A, OUTPUT);
@@ -60,11 +52,14 @@ void PID_Setup() {
   MOT_Stop();
 }
 
+int uartTime = 0;
 
 void PID_Update() {
-  if (time + 5 < millis()) {
-    UART_Update();
-    time = millis();
+
+  
+  if (uartTime + 5 < millis()) {
+    Control_UART_Update();
+    uartTime = millis();
   }
   
   /*for(int i =1;i<5;i++) {
@@ -78,26 +73,22 @@ void PID_Update() {
   yaw_Ctl = map(buf[4], 70, 176, YAW_MIN, YAW_MAX);
   motSpeed = map(buf[3], 0, 255, SPEED_MIN, SPEED_MAX);
 
-  if (xy_Ctl < XY_MIN || xy_Ctl > XY_MAX) {
+  if (xy_Ctl < XY_MIN || xy_Ctl > XY_MAX)
     xy_Ctl = xy_Ctl_Last;
-  }
-  if (roll_Ctl < ROLL_MIN || roll_Ctl > ROLL_MAX) {
+  if (roll_Ctl < ROLL_MIN || roll_Ctl > ROLL_MAX)
     roll_Ctl = roll_Ctl_Last;
-  }
-  if (yaw_Ctl < YAW_MIN || yaw_Ctl > ROLL_MAX) {
+  if (yaw_Ctl < YAW_MIN || yaw_Ctl > ROLL_MAX)
     yaw_Ctl = yaw_Ctl_Last;
-  }
 
   xy_Ctl_Last = xy_Ctl;
-
   roll_Ctl_Last = roll_Ctl;
   yaw_Ctl_Last = yaw_Ctl;
 
 
   AccelGyro_Update();
-  int target = 0;
+  int targetPoint = 0;
   //PITCH
-  XY_ERR = target - pitch; //목표값 - 현재값
+  XY_ERR = targetPoint - pitch; //목표값 - 현재값
   XY_PERR = (pitch - xy_PRE); //DT; //  기울기 차이/샘플링 주기
   XY_ERR_P = XY_ERR * XY_P; // 오차*P게인
   XY_ERR_I = XY_ERR_I + (XY_ERR * XY_I) * DT;
@@ -107,7 +98,7 @@ void PID_Update() {
   xy_PRE = pitch;
 
   //ROLL
-  /*ROLL_ERR = target - roll;
+  /*ROLL_ERR = targetPoint - roll;
   ROLL_PERR = (roll - roll_PRE) / DT;
   ROLL_ERR_P = ROLL_ERR * ROLL_P;
   ROLL_ERR_I = ROLL_ERR_I + (ROLL_ERR * ROLL_I) * DT;
@@ -117,7 +108,7 @@ void PID_Update() {
   roll_PRE = roll;*/
 
   //YAW
-  YAW_ERR = target - yaw;
+  YAW_ERR = targetPoint - yaw;
   YAW_ERR_P = YAW_ERR * YAW_P;
   YAW_ERR_I = YAW_ERR_I + (YAW_ERR * YAW_I) * DT;
   Limit_I(&YAW_ERR_I);
@@ -180,7 +171,7 @@ void PID_Update() {
     //DC2S_A = dcSpeed+abs(XY_PID);
     //DC2S_B = 0;
   }
-  
+
   /*Serial.print(" XY_PID :"+(String)+XY_PID);
   Serial.print(" / "+(String)DC3S_A);
   Serial.println(" / "+(String)DC3S_B);*/
@@ -189,10 +180,10 @@ void PID_Update() {
 }
 
 inline void MOT_Update() {
-  
-  analogWrite(DC3_A,DC3S_A);
-  analogWrite(DC3_B,DC3S_B);
-  
+
+  analogWrite(DC3_A, DC3S_A);
+  analogWrite(DC3_B, DC3S_B);
+
   //analogWrite(DC4_A,DC4S_B);
   //analogWrite(DC4_B,DC4S_A);
 }
@@ -202,22 +193,14 @@ void MOT_Stop() {
 
 void Limit_I(double *value) {
   if (*value >= 100)
-  {
     *value = 100;
-  }
   else if (*value <= -100)
-  {
     *value = -100;
-  }
 }
 
 void Limit_Speed(int *value) {
   if (*value >= SPEED_MAX)
-  {
     *value = SPEED_MAX;
-  }
   else if (*value <= SPEED_MIN)
-  {
     *value = SPEED_MIN;
-  }
 }

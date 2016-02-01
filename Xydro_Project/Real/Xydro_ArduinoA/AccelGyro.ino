@@ -20,7 +20,7 @@ double roll = 0;
 double yaw = 0;
 float DT = 0.01;
 
-void AccelGyro_Setup() {
+void AccelGyro_init() {
   Wire.begin();
   accelGyroMag.initialize();
 }

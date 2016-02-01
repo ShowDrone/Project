@@ -1,16 +1,16 @@
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(2, 3);
 
-//int buf[8] = {0,};
+int buf[8] = {0,};
 int Lastbuf[8] = {0,};
 boolean Loop = true;
 
-void UART_Setup() {
+void Control_UART_init() {
   Serial.begin(19200);
   mySerial.begin(19200);
 }
 
-void UART_Update() {
+void Control_UART_Update() {
   if (mySerial.available()) {
     here:
     for (int j = 0; j < 8; j++) {
