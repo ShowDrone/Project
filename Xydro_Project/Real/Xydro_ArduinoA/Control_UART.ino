@@ -12,7 +12,7 @@ void Control_UART_init() {
 
 void Control_UART_Update() {
   if (mySerial.available()) {
-    here:
+here:
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -27,18 +27,14 @@ void Control_UART_Update() {
       Loop = false;
     }
 
-    if ((buf[1] > 168) || (buf[1] < 88)) {
+    if ((buf[1] > 168) || (buf[1] < 88))
       buf[1] = Lastbuf[1];
-    }
-    if ((buf[2] > 168) || (buf[2] < 88)) {
+    if ((buf[2] > 168) || (buf[2] < 88))
       buf[2] = Lastbuf[2];
-    }
-    if ((buf[3] > 255) || (buf[3] < 0)) {
+    if ((buf[3] > 255) || (buf[3] < 0))
       buf[3] = Lastbuf[3];
-    }
-    if ((buf[4] > 176) || (buf[4] < 80)) {
+    if ((buf[4] > 176) || (buf[4] < 80))
       buf[4] = Lastbuf[4];
-    }
   }
   else
   {
@@ -51,9 +47,8 @@ void Control_UART_Update() {
   Serialprint();
 
   if (!Loop) {
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++)
       Lastbuf[i] = buf[i];
-    }
   }
   Serialreset();
 }

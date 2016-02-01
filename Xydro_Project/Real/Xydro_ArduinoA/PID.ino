@@ -1,6 +1,4 @@
 
-#define SPEED_MAX 2000 //예시
-#define SPEED_MIN 1000
 #define XY_MIN -30 // 상보필터 값에 맞게 셋팅
 #define XY_MAX 30 // 
 #define ROLL_MIN -30
@@ -30,7 +28,6 @@ double xy_PRE, roll_PRE;
 int xy_Ctl, roll_Ctl, yaw_Ctl;
 int xy_Ctl_Last, roll_Ctl_Last, yaw_Ctl_Last;
 int DC3S_A, DC3S_B, DC4S_A, DC4S_B;
-int motSpeed;
 
 int dcSpeed = 200; // 파라미터
 
@@ -56,22 +53,15 @@ int uartTime = 0;
 
 void PID_Update() {
 
-  
   if (uartTime + 5 < millis()) {
     Control_UART_Update();
     uartTime = millis();
   }
   
-  /*for(int i =1;i<5;i++) {
-    Serial.print(" ");
-    Serial.print(buf[i]);
-  }
-  Serial.println();*/
-
+  
   xy_Ctl = map(buf[2], 88, 168, XY_MIN, XY_MAX);
   roll_Ctl = map(buf[1], 88, 168, ROLL_MIN, ROLL_MAX);
   yaw_Ctl = map(buf[4], 70, 176, YAW_MIN, YAW_MAX);
-  motSpeed = map(buf[3], 0, 255, SPEED_MIN, SPEED_MAX);
 
   if (xy_Ctl < XY_MIN || xy_Ctl > XY_MAX)
     xy_Ctl = xy_Ctl_Last;
@@ -144,13 +134,6 @@ void PID_Update() {
 
   */
 
-
-  if (motSpeed < 1050);
-  {
-    MOT_Stop(); // 로터부 수평
-  }
-
-
   // 정방향 A=HIGH, B=LOW
   // 정방향이 pitch를 앞쪽으로
 
@@ -196,11 +179,4 @@ void Limit_I(double *value) {
     *value = 100;
   else if (*value <= -100)
     *value = -100;
-}
-
-void Limit_Speed(int *value) {
-  if (*value >= SPEED_MAX)
-    *value = SPEED_MAX;
-  else if (*value <= SPEED_MIN)
-    *value = SPEED_MIN;
 }

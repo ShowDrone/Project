@@ -63,7 +63,14 @@ void AccelGyro_Update() {
   //Serial.print(" yaw: ");
   //Serial.println(yaw);
 
-  /*Serial.print(" pitch: "); Serial.print(pitch);
+  //Serial.print(" yaw: ");
+  //Serial.println(yaw);
+
+  //AxisPrint();
+}
+
+void AxisPrint() {
+  Serial.print(" pitch: "); Serial.print(pitch);
   Serial.print(" roll: "); Serial.print(roll);
-  Serial.print(" yaw: "); Serial.println(yaw);*/
+  Serial.print(" yaw: "); Serial.println(yaw);
 }

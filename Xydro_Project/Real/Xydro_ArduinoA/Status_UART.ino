@@ -19,7 +19,7 @@ void Status_UART_Update() {
       yaw_B = altSerial.read();
     i++;
     if ( i == 3) {
-      StatusPrint();
+      //StatusPrint();
       break;
     }
   }

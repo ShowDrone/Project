@@ -27,7 +27,7 @@ void loop() {
   
   int time = millis() - time_pre;
   time_pre = millis();
-  Serial.print("time: " + (String)time);
+  Serial.print("time: "); Serial.println(time);
   
   
   Transmiter_Update();

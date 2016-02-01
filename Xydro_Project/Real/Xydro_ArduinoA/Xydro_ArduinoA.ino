@@ -24,15 +24,13 @@ void setup() {
   delay(500);
 }
 
-
 int time_pre = 0;
 
 void loop() {
   int time = millis() - time_pre;
   time_pre = millis();
-  Serial.print("time: " + (String)time);
- 
- 
+  Serial.print("time: "); Serial.println (time);
+  
   Status_UART_Update();
   PID_Update();
 }
