@@ -39,7 +39,7 @@ void loop() {
       altSerial.write(X);
       rollCheck = false;
       pitchCheck = true;
-      Serial.print(" 1 ");
+      Serial.print("1: "); Serial.print(rollTime+3);
       rollTime = millis();
     }
   }
@@ -48,7 +48,7 @@ void loop() {
       altSerial.write(Y);
       pitchCheck = false;
       yawCheck = true;
-      Serial.print(" 2 ");
+      Serial.print("2: "); Serial.print(pitchTime+3);
       pitchTime = millis();
     }
   }
@@ -57,7 +57,7 @@ void loop() {
       altSerial.write(Z);
       yawCheck = false;
       rollCheck = true;
-      Serial.println(" 3 ");
+      Serial.print("3: "); Serial.println(yawTime+3);
       yawTime = millis();
     }
   }
