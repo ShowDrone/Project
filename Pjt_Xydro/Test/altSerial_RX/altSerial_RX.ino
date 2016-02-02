@@ -8,12 +8,14 @@ void setup() {
   Serial.begin(19200);
 }
 
-
 void loop() {
   int i = 0;
   while (altSerial.available()) {
-    if (i == 0)
+    Serial.print(altSerial.available()); Serial.print(" ");
+    if (i == 0) {
       roll_B = altSerial.read();
+      Serial.print(" roll_B: "); Serial.print(roll_B);
+    }
     else if (i == 1)
       pitch_B = altSerial.read();
     else if (i == 2)
@@ -27,7 +29,7 @@ void loop() {
 }
 
 void StatusPrint() {
-  Serial.print(" roll_B:"); Serial.print(roll_B);
-  Serial.print(" pitch_B:"); Serial.print(pitch_B);
-  Serial.print(" yaw_B:"); Serial.println(yaw_B);
+  Serial.print(" roll_B: "); Serial.print(roll_B);
+  Serial.print(" pitch_B: "); Serial.print(pitch_B);
+  Serial.print(" yaw_B: "); Serial.println(yaw_B);
 }
