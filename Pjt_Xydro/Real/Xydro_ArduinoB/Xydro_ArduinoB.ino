@@ -22,14 +22,18 @@ void setup() {
 }
 
 int time_pre = 0;
+int waitTime = 0;
 
 void loop() {
   
   int time = millis() - time_pre;
   time_pre = millis();
-  Serial.print("time: "); Serial.println(time);
+  //Serial.print("time: "); Serial.print(time);
   
-  
-  Transmiter_Update();
+  if(waitTime + 5 > millis()) {
+    Serial.print("time: "); Serial.print(time);
+    Transmiter_Update();
+    waitTime = millis();
+  }
   PID_Update();
 }
