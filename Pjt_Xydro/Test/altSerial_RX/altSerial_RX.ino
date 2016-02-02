@@ -5,6 +5,7 @@ double pitch_B, roll_B, yaw_B;
 
 void setup() {
   altSerial.begin(19200);
+  Serial.begin(19200);
 }
 
 
