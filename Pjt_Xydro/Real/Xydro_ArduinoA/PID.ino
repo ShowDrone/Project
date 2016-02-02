@@ -155,7 +155,11 @@ void PID_Update() {
     //DC2S_B = 0;
   }
 
-  MOT_Update();
+  /*Serial.print(" XY_PID :"+(String)+XY_PID);
+  Serial.print(" / "+(String)DC3S_A);
+  Serial.println(" / "+(String)DC3S_B);*/
+
+  //MOT_Update();
 }
 
 inline void MOT_Update() {
