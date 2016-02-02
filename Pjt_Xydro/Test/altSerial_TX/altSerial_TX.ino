@@ -33,7 +33,14 @@ void loop() {
     value = false;
   }
   
+  altSerial.write(X);
+  delay(3);
+  altSerial.write(Y);
+  delay(3);
+  altSerial.write(Z);
+  delay(3);
   
+  /*
   if (rollCheck) {
     if (rollTime + 3 < millis()) {
       altSerial.write(X);
@@ -61,4 +68,5 @@ void loop() {
       yawTime = millis();
     }
   }
+  */
 }
