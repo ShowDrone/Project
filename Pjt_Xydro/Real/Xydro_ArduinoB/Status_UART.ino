@@ -10,12 +10,18 @@ boolean pitchCheck = false;
 boolean yawCheck = false;
 
 int rollTime = 0;
-int pithcTime = 0;
+int pitchTime = 0;
 int yawTime = 0;
 
 void Transmiter_Update() {
+  altSerial.write(roll);
+  delayMicroseconds(1500);
+  altSerial.write(roll);
+  delayMicroseconds(1500);
+  altSerial.write(roll);
+  /*
   if (rollCheck) {
-    if (rollTime + 3 < millis()) {
+    if (rollTime + 1 < millis()) {
       altSerial.write(roll);
       rollCheck = false;
       pitchCheck = true;
@@ -24,7 +30,7 @@ void Transmiter_Update() {
     }
   }
   else if (pitchCheck) {
-    if (pitchTime + 3 < millis()) {
+    if (pitchTime + 1 < millis()) {
       altSerial.write(pitch);
       pitchCheck = false;
       yawCheck = true;
@@ -33,12 +39,12 @@ void Transmiter_Update() {
     }
   }
   else if (yawCheck) {
-    if (yawTime + 3 < millis()) {
+    if (yawTime + 1 < millis()) {
       altSerial.write(yaw);
       yawCheck = false;
       rollCheck = true;
       Serial.println(" 3 ");
       yawTime = millis();
     }
-  }
+  }*/
 }
