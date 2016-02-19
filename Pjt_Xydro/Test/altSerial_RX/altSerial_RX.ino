@@ -8,21 +8,38 @@ void setup() {
   Serial.begin(19200);
 }
 
+int time = 0;
+
 void loop() {
+  //if (time + 5 < millis()) {
+  please();
+  //  time = millis();
+  //}
+}
+
+void please() {
   int i = 0;
   while (altSerial.available()) {
-    Serial.print(altSerial.available()); Serial.print(" ");
     if (i == 0) {
       roll_B = altSerial.read();
       Serial.print(" roll_B: "); Serial.print(roll_B);
+      i++;
     }
-    else if (i == 1)
+    if (i == 1) {
       pitch_B = altSerial.read();
-    else if (i == 2)
+      i++;
+      Serial.print(" pitch_B: "); Serial.print(pitch_B);
+    }
+    if (i == 2) {
       yaw_B = altSerial.read();
-    i++;
+      Serial.print(" yaw_B: "); Serial.println(yaw_B);
+      i++;
+    }
     if ( i == 3) {
-      StatusPrint();
+      //StatusPrint();
+      Serial.print(altSerial.available()); Serial.print(" ");
+      int a =  altSerial.readBytes(char a);
+      Serial.print(a); Serial.print(" ");
       break;
     }
   }

@@ -6,7 +6,7 @@ void setup() {
   altSerial.begin(19200);
 }
 
-double X, Y, Z;
+double X = 1, Y = 2, Z = 3;
 boolean value = false;
 
 int rollTime = 0;
@@ -20,26 +20,21 @@ boolean yawCheck = false;
 
 void loop() {
 
-  if (value == false) {
-    X = 1.55;
-    Y = 2.55;
-    Z = 3.55;
-    value = true;
+  if (Serial.available()) {
+    int readData = Serial.read();
+    if (readData == 'K') {
+      while (1) {  //altSerial.write(Y);
+        //altSerial.write(Z);
+        if (Serial.available()) {
+          int readData = Serial.read();
+          if (readData == 'K')
+            break;
+        }
+
+      }
+    }
   }
-  else if (value == true) {
-    X = 1.05;
-    Y = 2.05;
-    Z = 3.05;
-    value = false;
-  }
-  
-  altSerial.write(X);
-  delay(3);
-  altSerial.write(Y);
-  delay(3);
-  altSerial.write(Z);
-  delay(3);
-  
+
   /*
   if (rollCheck) {
     if (rollTime + 3 < millis()) {

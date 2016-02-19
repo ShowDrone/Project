@@ -31,7 +31,7 @@ void loop() {
   time_pre = millis();
   Serial.print("time: "); Serial.print(time);
   
-  Status_UART_Update();
+  //Status_UART_Update();
   PID_Update();
 }
 
