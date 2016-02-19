@@ -188,7 +188,7 @@ inline void MOT_Update() {
   //analogWrite(DC1_A, DC1S_A);
   //analogWrite(DC1_B,DC1S_B);
   analogWrite(DC2_A,DC2S_A);
-  //analogWrite(DC2_B,DC2S_B);
+  analogWrite(DC2_B,DC2S_B);
   //analogWrite(BLDC_A,motSpeed);
   //analogWrite(BLDC_B,motSpeed);
 }

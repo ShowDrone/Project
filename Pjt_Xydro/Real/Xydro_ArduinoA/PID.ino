@@ -160,7 +160,7 @@ void PID_Update() {
   Serial.print(" / "+(String)DC3S_A);
   Serial.println(" / "+(String)DC3S_B);*/
 
-  //MOT_Update();
+  MOT_Update();
 }
 
 inline void MOT_Update() {

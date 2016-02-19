@@ -7,7 +7,6 @@ MPU9150 accelGyroMag;
 
 int16_t AcX, AcY, AcZ;
 int16_t GyX, GyY, GyZ;
-int16_t MgX, MgY, MgZ;
 
 double rollGyro = 0;
 double pitchGyro = 0;
@@ -27,13 +26,6 @@ void AccelGyro_init() {
 
 void AccelGyro_Update() {
     accelGyroMag.getMotion6(&AcX,&AcY,&AcZ,&GyX,&GyY,&GyZ);
-    
-  /*Serial.print(GyX); Serial.print(" ");
-  Serial.print(GyY); Serial.print(" ");
-  Serial.print(GyZ); Serial.print(" ");
-  Serial.print(MgX); Serial.print(" ");
-  Serial.print(MgY); Serial.print(" ");
-  Serial.println(MgZ);*/
 
   //가속도 계산 Rad to Deg
   pitchAcc = atan2(AcY, AcZ) * 180 / PI; // arctan(X,Z)
@@ -57,9 +49,7 @@ void AccelGyro_Update() {
   //double XH = MgX*cos(pitch)+MgY*sin(roll)*sin(pitch)-MgZ*cos(roll)*sin(pitch);
   //double YH = MgY*cos(roll)+MgZ*sin(roll);
 
-  
-
-  //AxisPrint();
+  AxisPrint();
 }
 
 void AxisPrint() {
