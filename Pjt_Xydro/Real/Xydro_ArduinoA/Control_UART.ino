@@ -11,8 +11,9 @@ void Control_UART_init() {
 }
 
 void Control_UART_Update() {
+  mySerial.listen();
   if (mySerial.available()) {
-here:
+    here:
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -60,6 +61,7 @@ void Serialprint() {
   for (int i = 1; i < 5; i++) {
     Serial.print(" "); Serial.print(buf[i]); Serial.print(" ");
   }
-  Serial.println();
+  //Serial.println();
+  Serial.print(" / ");
 }
 

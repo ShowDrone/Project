@@ -1,23 +1,22 @@
-
-#include<NewSoftSerial.h>
-NewSoftSerial newSerial;
+/*#include<AltSoftSerial.h>
+AltSoftSerial altSerial;
 
 double pitch_B, roll_B, yaw_B;
-uint8_t rxpin = 7;
 
 void Status_UART_init() {
-  newSerial.begin(19200);
-  //newSerial.setRX(rxpin);
+  altSerial.begin(19200);
 }
+
+
 void Status_UART_Update() {
   int i = 0;
-  while (newSerial.available()) {
+  while (altSerial.available()) {
     if (i == 0)
-      roll_B = newSerial.read();
+      roll_B = altSerial.read();
     else if (i == 1)
-      pitch_B = newSerial.read();
+      pitch_B = altSerial.read();
     else if (i == 2)
-      yaw_B = newSerial.read();
+      yaw_B = altSerial.read();
     i++;
     if ( i == 3) {
       StatusPrint();
@@ -34,3 +33,4 @@ void StatusPrint() {
   Serial.print(" yaw_B:"); Serial.println(yaw_B);
   Serial.print("time: "); Serial.print(time);
 }
+*/
