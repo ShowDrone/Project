@@ -13,7 +13,7 @@ void Control_UART_init() {
 void Control_UART_Update() {
   mySerial.listen();
   if (mySerial.available()) {
-    here:
+here:
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -49,12 +49,13 @@ void Control_UART_Update() {
     for (int i = 0; i < 8; i++)
       Lastbuf[i] = buf[i];
   }
-  Serialreset();
+  mySerialreset;
+  Serialprint();
 }
 
-void Serialreset() {
-  mySerial.end();
-  mySerial.begin(19200);
+void mySerialreset() {
+    mySerial.end();
+    mySerial.begin(19200);
 }
 
 void Serialprint() {

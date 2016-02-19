@@ -1,8 +1,8 @@
 
-SoftwareSerial youSerial(4,5);
+SoftwareSerial yourSerial(4,5);
 
 void Transmiter_init() {
-  youSerial.begin(19200);
+  yourSerial.begin(19200);
 }
 
 boolean rollCheck = true;
@@ -14,13 +14,13 @@ int pitchTime = 0;
 int yawTime = 0;
 
 void Transmiter_Update() {
-  youSerial.write(roll);
-  youSerial.write(pitch);
-  youSerial.write(yaw);
+  yourSerial.write(roll);
+  yourSerial.write(pitch);
+  yourSerial.write(yaw);
   /*
   if (rollCheck) {
     if (rollTime + 1 < millis()) {
-      youSerial.write(roll);
+      yourSerial.write(roll);
       rollCheck = false;
       pitchCheck = true;
       Serial.print(" 1 ");
@@ -29,7 +29,7 @@ void Transmiter_Update() {
   }
   else if (pitchCheck) {
     if (pitchTime + 1 < millis()) {
-      youSerial.write(pitch);
+      yourSerial.write(pitch);
       pitchCheck = false;
       yawCheck = true;
       Serial.print(" 2 ");
@@ -38,7 +38,7 @@ void Transmiter_Update() {
   }
   else if (yawCheck) {
     if (yawTime + 1 < millis()) {
-      youSerial.write(yaw);
+      yourSerial.write(yaw);
       yawCheck = false;
       rollCheck = true;
       Serial.println(" 3 ");

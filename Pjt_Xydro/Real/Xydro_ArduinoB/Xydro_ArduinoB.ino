@@ -29,6 +29,6 @@ void loop() {
   time_pre = millis();
   Serial.print("time: "); Serial.print(time);
   
-  //Transmiter_Update();
+  Transmiter_Update();
   PID_Update();
 }

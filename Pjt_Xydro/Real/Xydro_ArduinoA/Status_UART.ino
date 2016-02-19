@@ -1,29 +1,35 @@
 
-SoftwareSerial youSerial(4,5);
+SoftwareSerial yourSerial(4, 5);
 
 double pitch_B, roll_B, yaw_B;
 
 void Status_UART_init() {
-  youSerial.begin(19200);
+  yourSerial.begin(19200);
 }
 
 
 void Status_UART_Update() {
-  youSerial.listen();
+  yourSerial.listen();
   int i = 0;
-  while (youSerial.available()) {
+  while (yourSerial.available()) {
     if (i == 0)
-      roll_B = youSerial.read();
+      roll_B = yourSerial.read();
     else if (i == 1)
-      pitch_B = youSerial.read();
+      pitch_B = yourSerial.read();
     else if (i == 2)
-      yaw_B = youSerial.read();
+      yaw_B = yourSerial.read();
     i++;
     if ( i == 3) {
+      yourSerialreset;
       StatusPrint();
       break;
     }
   }
+}
+
+void yourSerialreset() {
+  yourSerial.end();
+  yourSerial.begin(19200);
 }
 
 // No time, output delay time = 2ms + ( 27 * 0.5 ) = 15.5ms / error range 1ms
