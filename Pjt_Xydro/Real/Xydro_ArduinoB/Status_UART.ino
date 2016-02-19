@@ -14,11 +14,9 @@ int pitchTime = 0;
 int yawTime = 0;
 
 void Transmiter_Update() {
-  altSerial.write(1);
-  delayMicroseconds(1500);
-  altSerial.write(2);
-  delayMicroseconds(1500);
-  altSerial.write(3);
+  altSerial.write(roll);
+  altSerial.write(pitch);
+  altSerial.write(yaw);
   /*
   if (rollCheck) {
     if (rollTime + 1 < millis()) {

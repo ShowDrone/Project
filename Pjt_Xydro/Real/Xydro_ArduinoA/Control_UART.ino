@@ -44,8 +44,6 @@ here:
     buf[4] = 129;
   }
 
-  //Serialprint();
-
   if (!Loop) {
     for (int i = 0; i < 8; i++)
       Lastbuf[i] = buf[i];

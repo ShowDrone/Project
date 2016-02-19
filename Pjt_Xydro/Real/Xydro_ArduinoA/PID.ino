@@ -38,7 +38,6 @@ Buf1  Roll값      Buf2 Pitch값       Buf3 Speed값       Buf4 Yaw값
 -오른쪽 0xA8, 168  -후진값 0x58,  88                     -오른쪽 0xB0, 176
 */
 
-int time = millis();
 
 void PID_init() {
   pinMode(DC3_A, OUTPUT);
@@ -152,8 +151,8 @@ void PID_Update() {
   else if (XY_PID < 0) {
     DC3S_A = 0;
     DC3S_B = dcSpeed + abs(XY_PID);
-    //DC2S_A = dcSpeed+abs(XY_PID);
-    //DC2S_B = 0;
+    //DC3S_A = dcSpeed+abs(XY_PID);
+    //DC3S_B = 0;
   }
 
   /*Serial.print(" XY_PID :"+(String)+XY_PID);

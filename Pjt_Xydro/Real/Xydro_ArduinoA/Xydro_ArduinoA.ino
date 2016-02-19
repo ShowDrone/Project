@@ -25,10 +25,13 @@ void setup() {
 }
 
 int time_pre = 0;
+int time = 0;
 
 void loop() {
-  int time = millis() - time_pre;
+  time = millis() - time_pre;
   time_pre = millis();
+  
+  //output delay time = 2ms + ( 7 * 0.5 ) = 5ms / error range 0.5ms 
   //Serial.print("time: "); Serial.print(time);
   
   //Status_UART_Update();

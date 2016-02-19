@@ -19,14 +19,17 @@ void Status_UART_Update() {
       yaw_B = altSerial.read();
     i++;
     if ( i == 3) {
-      //StatusPrint();
+      StatusPrint();
       break;
     }
   }
 }
 
+// output delay time = 2ms + ( 27 * 0.5 ) = 15.5ms / error range 1ms
+// output delay time = 2ms + ( 33 * 0.5 ) = 18.5ms / error range 1ms
 void StatusPrint() {
   Serial.print(" roll_B:"); Serial.print(roll_B);
   Serial.print(" pitch_B:"); Serial.print(pitch_B);
   Serial.print(" yaw_B:"); Serial.println(yaw_B);
+  Serial.print("time: "); Serial.print(time);
 }
