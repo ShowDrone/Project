@@ -54,8 +54,8 @@ here:
 }
 
 void mySerialreset() {
-    mySerial.end();
-    mySerial.begin(19200);
+  mySerial.end();
+  mySerial.begin(19200);
 }
 
 void Serialprint() {

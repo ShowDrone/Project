@@ -1,8 +1,21 @@
+#include<AltSoftSerial.h>
 
-SoftwareSerial yourSerial(4,5);
+AltSoftSerial yourSerial;
 
 void Transmiter_init() {
   yourSerial.begin(19200);
+
+  while (1) {
+    yourSerial.write('B');
+    if (yourSerial.available()) {
+      int check = yourSerial.read();
+      if (check == 'O') {
+        Serial.println("Status_UART OK");
+        delay(500);
+        break;
+      }
+    }
+  }
 }
 
 boolean rollCheck = true;
@@ -14,35 +27,33 @@ int pitchTime = 0;
 int yawTime = 0;
 
 void Transmiter_Update() {
+
+  yourSerial.write('S');
+  delayMicroseconds(500);
   yourSerial.write(roll);
+  delayMicroseconds(500);
   yourSerial.write(pitch);
+  delayMicroseconds(500);
   yourSerial.write(yaw);
+  delayMicroseconds(500);
+  yourSerial.write('F');
+  delayMicroseconds(100);
+
   /*
-  if (rollCheck) {
-    if (rollTime + 1 < millis()) {
-      yourSerial.write(roll);
-      rollCheck = false;
-      pitchCheck = true;
-      Serial.print(" 1 ");
-      rollTime = millis();
-    }
+  if(rollCheck) {
+    yourSerial.write(roll);
+    rollCheck = false;
+    pitchCheck = true;
   }
-  else if (pitchCheck) {
-    if (pitchTime + 1 < millis()) {
-      yourSerial.write(pitch);
-      pitchCheck = false;
-      yawCheck = true;
-      Serial.print(" 2 ");
-      pitchTime = millis();
-    }
+  else if(pitchCheck) {
+    yourSerial.write(pitch);
+    pitchCheck = false;
+    yawCheck = true;
   }
-  else if (yawCheck) {
-    if (yawTime + 1 < millis()) {
-      yourSerial.write(yaw);
-      yawCheck = false;
-      rollCheck = true;
-      Serial.println(" 3 ");
-      yawTime = millis();
-    }
-  }*/
+  else if(yawCheck) {
+    yourSerial.write(yaw);
+    yawCheck = false;
+    rollCheck = true;
+  }
+  */
 }

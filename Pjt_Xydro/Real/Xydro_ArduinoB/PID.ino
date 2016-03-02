@@ -8,10 +8,10 @@
 #define YAW_MIN -20
 #define YAW_MAX 20
 
-#define DC1_A 3
-#define DC1_B 5
-#define DC2_A 6
-#define DC2_B 9
+#define DC1_A 3 //
+#define DC1_B 5 // 
+#define DC2_A 6 //
+#define DC2_B 9 // 
 #define BLDC_A 10
 #define BLDC_B 11
 
@@ -51,9 +51,11 @@ void PID_init() {
 }
 
 int uartTime = 0;
+int emergencyTime = 0;
+int emergencySpeed = 0;
 
 void PID_Update() {
-  
+
   if (uartTime + 5 < millis()) {
     Control_UART_Update();
     uartTime = millis();
@@ -62,7 +64,22 @@ void PID_Update() {
   xy_Ctl = map(buf[2], 88, 168, XY_MIN, XY_MAX);
   roll_Ctl = map(buf[1], 88, 168, ROLL_MIN, ROLL_MAX);
   yaw_Ctl = map(buf[4], 70, 176, YAW_MIN, YAW_MAX);
-  motSpeed = buf[3];
+
+  if (Emergency == false)
+    motSpeed = buf[3];
+
+  if (Emergency == true) {
+    if (motSpeed >= 0) {
+      if (motSpeed >= 30)
+        emergencySpeed = motSpeed / 10;
+      else
+        emergencySpeed = motSpeed;
+      if (emergencyTime + 1000 > millis()) {
+        motSpeed -= emergencySpeed;
+        emergencyTime = millis();
+      }
+    }
+  }
 
   if (xy_Ctl < XY_MIN || xy_Ctl > XY_MAX) {
     xy_Ctl = xy_Ctl_Last;
@@ -81,6 +98,13 @@ void PID_Update() {
 
 
   AccelGyro_Update();
+
+
+  if (Emergency == true) {
+    pitch = 0;
+    roll = 0;
+    yaw = 0;
+  }
 
   //PITCH
   //XY_ERR = xy_Ctl - pitch; //목표값 - 현재값
@@ -186,8 +210,8 @@ void PID_Update() {
 inline void MOT_Update() {
   //analogWrite(DC1_A, DC1S_A);
   //analogWrite(DC1_B,DC1S_B);
-  analogWrite(DC2_A,DC2S_A);
-  analogWrite(DC2_B,DC2S_B);
+  analogWrite(DC2_A, DC2S_A);
+  analogWrite(DC2_B, DC2S_B);
   //analogWrite(BLDC_A,motSpeed);
   //analogWrite(BLDC_B,motSpeed);
 }

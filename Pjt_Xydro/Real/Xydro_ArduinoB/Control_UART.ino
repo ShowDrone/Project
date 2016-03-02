@@ -4,6 +4,7 @@ SoftwareSerial mySerial(2, 3);
 int buf[8] = {0,};
 int Lastbuf[8] = {0,};
 boolean Loop = true;
+boolean Emergency = false;
 
 void Control_UART_init() {
   Serial.begin(19200);
@@ -46,6 +47,7 @@ void Control_UART_Update() {
     buf[2] = 129;
     buf[3] = 0;
     buf[4] = 129;
+    Emergency = true;
   }
 
   //Serialprint();
