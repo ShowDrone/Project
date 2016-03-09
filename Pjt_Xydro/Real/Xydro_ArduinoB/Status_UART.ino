@@ -55,8 +55,8 @@ void Transmiter_Update() {
   Z.realN = yaw - Z.integer;
   Z.integer *= 100;
 
-
-
+  yourSerial.write('S');
+  delayMicroseconds(100);
 
   yourSerial.write('X');
   yourSerial.write(X.realN);
