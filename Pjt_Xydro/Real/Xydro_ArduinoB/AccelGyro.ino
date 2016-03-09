@@ -14,6 +14,8 @@ double yawGyro = 0;
 double rollAcc = 0;
 double pitchAcc = 0;
 double yawAcc = 0;
+
+
 double pitch = 0;
 double roll = 0;
 double yaw = 0;
@@ -49,7 +51,7 @@ void AccelGyro_Update() {
   //double XH = MgX*cos(pitch)+MgY*sin(roll)*sin(pitch)-MgZ*cos(roll)*sin(pitch);
   //double YH = MgY*cos(roll)+MgZ*sin(roll);
 
-  AxisPrint();
+  //AxisPrint();
 }
 
 void AxisPrint() {

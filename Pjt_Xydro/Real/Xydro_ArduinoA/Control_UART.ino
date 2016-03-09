@@ -11,8 +11,7 @@ void Control_UART_init() {
 }
 
 void Control_UART_Update() {
-  mySerial.listen();
-  if (mySerial.available()) {
+  while (mySerial.available()) {
 here:
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
@@ -37,8 +36,7 @@ here:
     if ((buf[4] > 176) || (buf[4] < 80))
       buf[4] = Lastbuf[4];
   }
-  else
-  {
+  if (mySerial.available() < 1) {
     buf[1] = 129;
     buf[2] = 129;
     buf[3] = 0;
@@ -50,7 +48,7 @@ here:
       Lastbuf[i] = buf[i];
   }
   mySerialreset;
-  Serialprint();
+  //Serialprint();
 }
 
 void mySerialreset() {

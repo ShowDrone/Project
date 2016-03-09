@@ -7,12 +7,11 @@ boolean Loop = true;
 boolean Emergency = false;
 
 void Control_UART_init() {
-  Serial.begin(19200);
   mySerial.begin(19200);
 }
 
 void Control_UART_Update() {
-  if (mySerial.available()) {
+  while (mySerial.available()) {
     here:
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
@@ -41,8 +40,7 @@ void Control_UART_Update() {
       buf[4] = Lastbuf[4];
     }
   }
-  else
-  {
+  if (mySerial.available() < 1) {
     buf[1] = 129;
     buf[2] = 129;
     buf[3] = 0;

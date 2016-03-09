@@ -1,3 +1,13 @@
+/*
+/////////////////////////////
+
+
+         Outside Part
+
+
+/////////////////////////////
+*/
+
 
 /*
 Wire Number
@@ -11,7 +21,10 @@ DC4_B 9
 
   Test Board : Arduino Uno
   불의로 통신 끊겼을 시 호버링 유지하는 기능
+  
 */
+
+
 void setup() {
   Serial.begin(19200);
   

@@ -4,10 +4,19 @@ AltSoftSerial yourSerial;
 
 double pitch_B, roll_B, yaw_B;
 
+struct Axis {
+  int realN;
+  double integer;
+};
+
+struct Axis X;
+struct Axis Y;
+struct Axis Z;
+
 void Status_UART_init() {
   yourSerial.begin(19200);
   while (1) {
-    while (yourSerial.available()) {
+    if (yourSerial.available()) {
       int check = yourSerial.read();
       if (check == 'B') {
         yourSerial.write('O');
@@ -21,7 +30,9 @@ void Status_UART_init() {
 }
 
 boolean Starting = true;
-boolean Between = false;
+boolean ROLL = false;
+boolean PITCH = false;
+boolean YAW = false;
 boolean Finish = false;
 
 int correct = 0;
@@ -30,69 +41,194 @@ void Status_UART_Update() {
   if (Starting == true)
     StartingCheck();
 
-  if (Between == true)
-    BetweenCheck();
+  if (ROLL == true)
+    RollCheck();
+
+  if (PITCH == true)
+    PitchCheck();
+
+  if (YAW == true)
+    YawCheck();
+
 
   if (Finish == true)
     FinishCheck();
 
+
+  StatusPrint();
+
+  yourSerialreset();
+
 }
 
 void StartingCheck() {
-  int count = 0;
 
-  while (yourSerial.available() > 0) {
+  if (yourSerial.available() > 0) {
     int Check = yourSerial.read();
-    count++;
 
-    if (Check == 'S') {
-      correct++;
-      Between = true;
+    if (Check == 0x00) {
+      ROLL = true;
       Starting = false;
     }
-
-    if (count == 1)
-      break;
   }
 }
 
-void BetweenCheck() {
+void RollCheck() {
   int count = 0;
   int sum = 0;
   while (yourSerial.available() > 0) {
-    int Check = yourSerial.read();
-    count++;
-    sum += Check;
 
+    if (count == 0) {
+      int Check = yourSerial.read();
+
+      if ( Check == '0')
+        count++;
+
+      else if ( Check = ! '0') {
+        ROLL = false;
+        Starting = true;
+        FaildPrint(0x00);
+        break;
+      }
+    }
+
+    if (count == 1) {
+      X.realN = yourSerial.read();
+      count++;
+    }
     if (count == 2) {
+      X.integer = yourSerial.read() / 100;
+      count++;
+    }
+
+    else if (count == 3) {
+      int Confirm = CheckSum(sum);
+
+      if (Confirm == 0) {
+        PITCH = true;
+        ROLL = false;
+      }
+
+      else if (Confirm != 0) {
+        Starting = true;
+        ROLL = false;
+        FaildPrint(0x01);
+        break;
+      }
+    }
+  }
+}
+
+void PitchCheck() {
+  int count = 0;
+  int sum = 0;
+  while (yourSerial.available() > 0) {
+
+    if (count == 0) {
+      int Check = yourSerial.read();
+
+      if ( Check == '1')
+        count++;
+
+      else if ( Check = ! '1') {
+        PITCH = false;
+        Starting = true;
+        FaildPrint(0x01);
+        break;
+      }
+    }
+
+    if (count == 1) {
+      Y.realN = yourSerial.read();
+
+      count++;
+    }
+    if (count == 2) {
+      Y.integer = yourSerial.read() / 100;
+      count++;
+    }
+
+    else if (count == 3) {
+      int Confirm = CheckSum(sum);
+
+      if (Confirm == 0) {
+        YAW = true;
+        ROLL = false;
+      }
+
+      else if (Confirm != 0) {
+        Starting = true;
+        PITCH = false;
+        FaildPrint(0x02);
+        break;
+      }
+    }
+  }
+}
+
+void YawCheck() {
+  int count = 0;
+  int sum = 0;
+  while (yourSerial.available() > 0) {
+
+    if (count == 0) {
+      int Check = yourSerial.read();
+
+      if ( Check == '2')
+        count++;
+
+      else if ( Check = ! '2') {
+        YAW = false;
+        Starting = true;
+        FaildPrint(0x02);
+        break;
+      }
+    }
+
+    if (count == 1) {
+      Z.realN =  yourSerial.read();
+      count++;
+    }
+    if (count == 2) {
+      Z.integer = yourSerial.read() / 100;
+      count++;
+    }
+
+    else if (count == 3) {
       int Confirm = CheckSum(sum);
 
       if (Confirm == 0) {
         Finish = true;
-        Between = false;
-        correct += 3;
+        YAW = false;
       }
-      break;
+
+      else if (Confirm != 0) {
+        Starting = true;
+        YAW = false;
+        FaildPrint(0x03);
+        break;
+      }
     }
   }
 }
 
 
 void FinishCheck() {
-  int count = 0;
 
-  while (yourSerial.available() > 0) {
+  if (yourSerial.available() > 0) {
     int Check = yourSerial.read();
-    count++;
-    correct++;
 
-    if (Check == 'F' && correct == 4) {
-      Starting = true;
+    if (Check == 0xFF) {
+      StatusPrint();
       Finish = false;
+      Starting = true;
     }
 
-    if (count == 1)
-      break;
+    else {
+      Starting = true;
+      Finish = false;
+      FaildPrint(0x04);
+    }
   }
 }
 
@@ -116,6 +252,22 @@ void yourSerialreset() {
 void StatusPrint() {
   Serial.print(" roll_B:"); Serial.print(roll_B);
   Serial.print(" pitch_B:"); Serial.print(pitch_B);
-  Serial.print(" yaw_B:"); Serial.println(yaw_B);
+  Serial.print(" yaw_B:"); Serial.print(yaw_B);
   Serial.print("time: "); Serial.println(time);
+}
+
+void FaildPrint(int Check) {
+  if (Check == 0x01)
+    Serial.print(" PITCH ERROR!!! ");
+
+  else if (Check == 0x02)
+    Serial.print(" ROLL ERROR!!! ");
+
+  else if (Check == 0x03)
+    Serial.print(" YAW ERROR!!! ");
+
+  else if (Check == 0x04)
+    Serial.print(" Finish ERROR!!! ");
+
+  Serial.println();
 }

@@ -2,6 +2,12 @@
 
 AltSoftSerial yourSerial;
 
+struct Axis {
+  int realN = 0;
+  double integer = 0;
+};
+
+
 void Transmiter_init() {
   yourSerial.begin(19200);
 
@@ -26,18 +32,48 @@ int rollTime = 0;
 int pitchTime = 0;
 int yawTime = 0;
 
+struct Axis X;
+struct Axis Y;
+struct Axis Z;
+
 void Transmiter_Update() {
 
-  yourSerial.write('S');
-  delayMicroseconds(500);
-  yourSerial.write(roll);
-  delayMicroseconds(500);
-  yourSerial.write(pitch);
-  delayMicroseconds(500);
-  yourSerial.write(yaw);
-  delayMicroseconds(500);
-  yourSerial.write('F');
+  roll = 1.45;
+  pitch = 2.45;
+  yaw = 3.45;
+
+
+  X.integer = roll - (int)roll;
+  X.realN = roll - X.integer;
+  X.integer *= 100;
+
+  Y.integer = pitch - (int)pitch;
+  Y.realN = pitch - Y.integer;
+  Y.integer *= 100;
+
+  Z.integer = yaw - (int)yaw;
+  Z.realN = yaw - Z.integer;
+  Z.integer *= 100;
+
+
+
+
+  yourSerial.write('X');
+  yourSerial.write(X.realN);
+  yourSerial.write((int)X.integer);
   delayMicroseconds(100);
+
+  yourSerial.write('Y');
+  yourSerial.write(Y.realN);
+  yourSerial.write((int)Y.integer);
+  delayMicroseconds(100);
+
+  yourSerial.write('Z');
+  yourSerial.write(Z.realN);
+  yourSerial.write((int)Z.integer);
+  delayMicroseconds(100);
+
+  yourSerial.write('F');
 
   /*
   if(rollCheck) {

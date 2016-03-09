@@ -1,3 +1,14 @@
+/*
+/////////////////////////////
+
+
+          Inside Part
+
+
+/////////////////////////////
+*/
+
+
 
 /*
 Wire Number
@@ -15,6 +26,8 @@ BLDC_B 11
 */
 
 void setup() {
+  Serial.begin(19200);
+  
   AccelGyro_init();
   Control_UART_init();
   Transmiter_init();
