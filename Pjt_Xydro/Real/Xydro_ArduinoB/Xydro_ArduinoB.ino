@@ -40,7 +40,7 @@ void loop() {
   
   int time = millis() - time_pre;
   time_pre = millis();
-  Serial.print("time: "); Serial.print(time);
+  //Serial.print("time: "); Serial.print(time);
   
   Transmiter_Update();
   PID_Update();

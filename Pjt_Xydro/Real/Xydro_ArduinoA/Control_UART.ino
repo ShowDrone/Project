@@ -11,14 +11,23 @@ void Control_UART_init() {
 }
 
 void Control_UART_Update() {
+  int gotoCheck = 0;
+
   while (mySerial.available()) {
-here:
+here: // [Goto A]
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
-    if (buf[5] != 0) {
+    if (buf[5] != 0) // [Goto A]
       goto here;
-    }
+
+    /*
+    if (buf[5] != 0) { // [Goto B]
+      gotoCheck = 1;
+      goto here;
+
+    }*/
+
 
     if (Loop) {
       for (int i = 0; i < 8; i++) {
@@ -47,8 +56,11 @@ here:
     for (int i = 0; i < 8; i++)
       Lastbuf[i] = buf[i];
   }
+
+  //here: // [Goto B]
+  
   mySerialreset;
-  //Serialprint();
+  Serialprint();
 }
 
 void mySerialreset() {
@@ -60,7 +72,6 @@ void Serialprint() {
   for (int i = 1; i < 5; i++) {
     Serial.print(" "); Serial.print(buf[i]); Serial.print(" ");
   }
-  //Serial.println();
-  Serial.print(" / ");
+  Serial.println();
 }
 

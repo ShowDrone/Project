@@ -46,6 +46,7 @@ void Transmiter_Update() {
   X.integer = roll - (int)roll;
   X.realN = roll - X.integer;
   X.integer *= 100;
+  Serial.println((int)X.integer);
 
   Y.integer = pitch - (int)pitch;
   Y.realN = pitch - Y.integer;

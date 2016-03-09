@@ -75,7 +75,6 @@ void StartingCheck() {
 }
 
 void RollCheck() {
-  Serial.println(" 씨발 제발 되라 ");
   int count = 0;
   int sum = 0;
   while (yourSerial.available() > 0) {
@@ -83,7 +82,7 @@ void RollCheck() {
     if (count == 0) {
       char Check = yourSerial.read();
       if ( Check == 'X') {
-        Serial.println(" 씨발 제발 되라!!!! ");
+        Serial.println(" 2 ");
         count++;
       }
 
@@ -101,18 +100,19 @@ void RollCheck() {
       count++;
     }
     if (count == 2) {
-      X.integer = yourSerial.read() / 100;
+      X.integer = yourSerial.read();
+      X.integer /= 100;
       sum += X.integer * 100;
       count++;
     }
 
-    else if (count == 3) {
+    else if (count == 3) {;
       int Confirm = CheckSum(sum);
-
       if (Confirm == 0) {
         PITCH = true;
         ROLL = false;
         roll_B = X.realN + X.integer;
+        break;
       }
 
       else if (Confirm != 0) {
@@ -150,7 +150,8 @@ void PitchCheck() {
       count++;
     }
     if (count == 2) {
-      Y.integer = yourSerial.read() / 100;
+      Y.integer = yourSerial.read();
+      Y.integer /= 100;
       sum += Y.integer * 100;
 
       count++;
@@ -163,6 +164,7 @@ void PitchCheck() {
         YAW = true;
         ROLL = false;
         pitch_B = Y.realN + Y.integer;
+        break;
       }
 
       else if (Confirm != 0) {
@@ -200,7 +202,8 @@ void YawCheck() {
       count++;
     }
     if (count == 2) {
-      Z.integer = yourSerial.read() / 100;
+      Z.integer = yourSerial.read();
+      Z.integer /= 100;
       sum += Z.integer * 100;
       count++;
     }
@@ -212,6 +215,7 @@ void YawCheck() {
         Finish = true;
         YAW = false;
         yaw_B = Z.realN + Z.integer;
+        break;
       }
 
       else if (Confirm != 0) {
@@ -231,7 +235,7 @@ void FinishCheck() {
     char Check = yourSerial.read();
 
     if (Check == 'F') {
-      StatusPrint();
+      //StatusPrint();
       Finish = false;
       Starting = true;
     }
@@ -269,7 +273,7 @@ void StatusPrint() {
 }
 
 void FaildPrint(char Check) {
-
+  /*
   if (Check == 0x00)
     Serial.print(" STARTING EROOR!!! ");
 
@@ -286,4 +290,5 @@ void FaildPrint(char Check) {
     Serial.print(" Finish ERROR!!! ");
 
   Serial.println();
+  */
 }
