@@ -59,17 +59,23 @@ void Transmiter_Update() {
   delayMicroseconds(100);
 
   yourSerial.write('X');
+  delayMicroseconds(100);
   yourSerial.write(X.realN);
+  delayMicroseconds(100);
   yourSerial.write((int)X.integer);
   delayMicroseconds(100);
 
   yourSerial.write('Y');
+  delayMicroseconds(100);
   yourSerial.write(Y.realN);
+  delayMicroseconds(100);
   yourSerial.write((int)Y.integer);
   delayMicroseconds(100);
 
   yourSerial.write('Z');
+  delayMicroseconds(100);
   yourSerial.write(Z.realN);
+  delayMicroseconds(100);
   yourSerial.write((int)Z.integer);
   delayMicroseconds(100);
 

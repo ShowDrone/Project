@@ -17,8 +17,8 @@ void Status_UART_init() {
   yourSerial.begin(19200);
   while (1) {
     if (yourSerial.available()) {
-      int check = yourSerial.read();
-      if (check == 'B') {
+      char Check = yourSerial.read();
+      if (Check == 'B') {
         yourSerial.write('O');
         delayMicroseconds(500);
         Serial.println("Status_UART OK");
@@ -36,10 +36,7 @@ boolean YAW = false;
 boolean Finish = false;
 
 void Status_UART_Update() {
-  
-  
-  Serial.println ("Check");
-  
+
   if (Starting == true)
     StartingCheck();
 
@@ -66,7 +63,7 @@ void Status_UART_Update() {
 void StartingCheck() {
 
   if (yourSerial.available() > 0) {
-    int Check = yourSerial.read();
+    char Check = yourSerial.read();
 
     if (Check == 'S') {
       ROLL = true;
@@ -78,16 +75,19 @@ void StartingCheck() {
 }
 
 void RollCheck() {
+  Serial.println(" 씨발 제발 되라 ");
   int count = 0;
   int sum = 0;
   while (yourSerial.available() > 0) {
 
     if (count == 0) {
-      int Check = yourSerial.read();
-      if ( Check == '0')
+      char Check = yourSerial.read();
+      if ( Check == 'X') {
+        Serial.println(" 씨발 제발 되라!!!! ");
         count++;
+      }
 
-      else if ( Check = ! '0') {
+      else if ( Check = ! 'X') {
         ROLL = false;
         Starting = true;
         FaildPrint(0x01);
@@ -131,12 +131,12 @@ void PitchCheck() {
   while (yourSerial.available() > 0) {
 
     if (count == 0) {
-      int Check = yourSerial.read();
+      char Check = yourSerial.read();
 
-      if ( Check == '1')
+      if ( Check == 'Y')
         count++;
 
-      else if ( Check = ! '1') {
+      else if ( Check = ! 'Y') {
         PITCH = false;
         Starting = true;
         FaildPrint(0x01);
@@ -181,12 +181,12 @@ void YawCheck() {
   while (yourSerial.available() > 0) {
 
     if (count == 0) {
-      int Check = yourSerial.read();
+      char Check = yourSerial.read();
 
-      if ( Check == '2')
+      if ( Check == 'Z')
         count++;
 
-      else if ( Check = ! '2') {
+      else if ( Check = ! 'Z') {
         YAW = false;
         Starting = true;
         FaildPrint(0x02);
@@ -228,9 +228,9 @@ void YawCheck() {
 void FinishCheck() {
 
   if (yourSerial.available() > 0) {
-    int Check = yourSerial.read();
+    char Check = yourSerial.read();
 
-    if (Check == 0xFF) {
+    if (Check == 'F') {
       StatusPrint();
       Finish = false;
       Starting = true;
@@ -244,7 +244,7 @@ void FinishCheck() {
   }
 }
 
-int CheckSum(int sum) {
+char CheckSum(int sum) {
   int total = sum;
   sum &= 0xFF;
   sum = ~sum + 1;
@@ -268,11 +268,11 @@ void StatusPrint() {
   Serial.print("time: "); Serial.println(time);
 }
 
-void FaildPrint(int Check) {
-  
+void FaildPrint(char Check) {
+
   if (Check == 0x00)
     Serial.print(" STARTING EROOR!!! ");
-  
+
   else if (Check == 0x01)
     Serial.print(" ROLL ERROR!!! ");
 
