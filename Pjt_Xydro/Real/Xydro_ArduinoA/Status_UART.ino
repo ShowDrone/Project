@@ -35,9 +35,11 @@ boolean PITCH = false;
 boolean YAW = false;
 boolean Finish = false;
 
-int correct = 0;
-
 void Status_UART_Update() {
+  
+  
+  Serial.println ("Check");
+  
   if (Starting == true)
     StartingCheck();
 
@@ -55,7 +57,7 @@ void Status_UART_Update() {
     FinishCheck();
 
 
-  StatusPrint();
+  // StatusPrint();
 
   yourSerialreset();
 
@@ -66,10 +68,12 @@ void StartingCheck() {
   if (yourSerial.available() > 0) {
     int Check = yourSerial.read();
 
-    if (Check == 0x00) {
+    if (Check == 'S') {
       ROLL = true;
       Starting = false;
     }
+    else
+      FaildPrint(0x00);
   }
 }
 
@@ -80,24 +84,25 @@ void RollCheck() {
 
     if (count == 0) {
       int Check = yourSerial.read();
-
       if ( Check == '0')
         count++;
 
       else if ( Check = ! '0') {
         ROLL = false;
         Starting = true;
-        FaildPrint(0x00);
+        FaildPrint(0x01);
         break;
       }
     }
 
     if (count == 1) {
       X.realN = yourSerial.read();
+      sum += X.realN;
       count++;
     }
     if (count == 2) {
       X.integer = yourSerial.read() / 100;
+      sum += X.integer * 100;
       count++;
     }
 
@@ -107,6 +112,7 @@ void RollCheck() {
       if (Confirm == 0) {
         PITCH = true;
         ROLL = false;
+        roll_B = X.realN + X.integer;
       }
 
       else if (Confirm != 0) {
@@ -140,11 +146,13 @@ void PitchCheck() {
 
     if (count == 1) {
       Y.realN = yourSerial.read();
-
+      sum += Y.realN;
       count++;
     }
     if (count == 2) {
       Y.integer = yourSerial.read() / 100;
+      sum += Y.integer * 100;
+
       count++;
     }
 
@@ -154,6 +162,7 @@ void PitchCheck() {
       if (Confirm == 0) {
         YAW = true;
         ROLL = false;
+        pitch_B = Y.realN + Y.integer;
       }
 
       else if (Confirm != 0) {
@@ -187,10 +196,12 @@ void YawCheck() {
 
     if (count == 1) {
       Z.realN =  yourSerial.read();
+      sum += Z.realN;
       count++;
     }
     if (count == 2) {
       Z.integer = yourSerial.read() / 100;
+      sum += Z.integer * 100;
       count++;
     }
 
@@ -200,6 +211,7 @@ void YawCheck() {
       if (Confirm == 0) {
         Finish = true;
         YAW = false;
+        yaw_B = Z.realN + Z.integer;
       }
 
       else if (Confirm != 0) {
@@ -257,11 +269,15 @@ void StatusPrint() {
 }
 
 void FaildPrint(int Check) {
-  if (Check == 0x01)
-    Serial.print(" PITCH ERROR!!! ");
+  
+  if (Check == 0x00)
+    Serial.print(" STARTING EROOR!!! ");
+  
+  else if (Check == 0x01)
+    Serial.print(" ROLL ERROR!!! ");
 
   else if (Check == 0x02)
-    Serial.print(" ROLL ERROR!!! ");
+    Serial.print(" PITCH ERROR!!! ");
 
   else if (Check == 0x03)
     Serial.print(" YAW ERROR!!! ");
