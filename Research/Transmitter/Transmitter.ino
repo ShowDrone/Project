@@ -28,7 +28,7 @@ int16_t pre_time = 0;
 int32_t check = 0;
 int8_t word_count = 0;
 int16_t what_data = 0;
-int16_t delay_time = 0;
+int32_t delay_time = 0;
 int32_t baud_rate = 300;
 
 void loop() {
@@ -264,10 +264,10 @@ baud_here:
     check = mySerial.read();
     if (check = 'A') {
       input_check = true;
-      data_check == false;
-      word_check == false;
-      delay_check == false;
-      rate_check == false;
+      data_check = false;
+      word_check = false;
+      delay_check = false;
+      rate_check = false;
     }
   }
 
