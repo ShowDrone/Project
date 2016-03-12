@@ -166,7 +166,7 @@ here:
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
-          check = (int8_t)Serial.parseInt();
+          check = (int16_t)Serial.parseInt();
           if ( check < 0 || check > 255) {
             Serial.println(" You out of the data range ");
             Serial.println(" Please repeat again ");
