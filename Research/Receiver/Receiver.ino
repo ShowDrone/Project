@@ -69,12 +69,12 @@ void loop() {
     if (Serial.available()) {
       check = Serial.read();
       if (check == '1') {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 3; i++)
           Serial.println();
 here:
         Serial.println(" Enter the number of send data from 1 to 10: ");
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 12; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -82,7 +82,7 @@ here:
           if ( 1 <= check && check <= 10) { // ASKII Code
             word_count = check;
             Serial.print(" You choose ["); Serial.print(word_count); Serial.println("] data transmission ");
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 12; i++)
               Serial.println();
             delay(2000);
             OnePrint = true;
@@ -92,7 +92,7 @@ here:
             for (int i = 0; i < 8; i++)
               Serial.println();
             Serial.println(" Please enter again ");
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 13; i++)
               Serial.println();
             delay(2000);
             goto here;
@@ -127,12 +127,12 @@ baud_here:
             goto baud_here;
           }
           else {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
               Serial.println();
             baud_rate = Translation(check);
             Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] ");
           }
-          for (int i = 0; i < 9; i++)
+          for (int i = 0; i < 12; i++)
             Serial.println();
           OnePrint = true;
           rate_check = true;
