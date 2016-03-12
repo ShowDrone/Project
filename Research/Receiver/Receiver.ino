@@ -115,7 +115,7 @@ baud_here:
         Serial.println(" | baud rate 19200 :    [6]  |");
         Serial.println(" | baud rate 38400 :    [7]  |");
         Serial.println(" | baud rate 57600 :    [8]  |");
-        Serial.println(" | baud rate 162000 :  [9]  |");
+        Serial.println(" | baud rate 115200 :  [9]  |");
         Serial.println(" - - - - - - - - - - - - - - -");
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -183,43 +183,44 @@ baud_here:
       for (int i = 0; i < 12; i++)
         Serial.println();
     }
-    else if (check == 'R') {
+  }
 
-      switch (word_count) {
-        case 1:
-          Reading(1);
-          break;
-        case 2:
-          Reading(2);
-          break;
-        case 3:
-          Reading(3);
-          break;
-        case 4:
-          Reading(4);
-          break;
-        case 5:
-          Reading(5);
-          break;
-        case 6:
-          Reading(6);
-          break;
-        case 7:
-          Reading(7);
-          break;
-        case 8:
-          Reading(8);
-          break;
-        case 9:
-          Reading(9);
-          break;
-        case 10:
-          Reading(10);
-          break;
-      }
+  if (mySerial.available()) {
+    switch (word_count) {
+      case 1:
+        Reading(1);
+        break;
+      case 2:
+        Reading(2);
+        break;
+      case 3:
+        Reading(3);
+        break;
+      case 4:
+        Reading(4);
+        break;
+      case 5:
+        Reading(5);
+        break;
+      case 6:
+        Reading(6);
+        break;
+      case 7:
+        Reading(7);
+        break;
+      case 8:
+        Reading(8);
+        break;
+      case 9:
+        Reading(9);
+        break;
+      case 10:
+        Reading(10);
+        break;
     }
   }
 }
+
 
 void Reading(int num) {
   while (mySerial.available()) {
@@ -231,7 +232,7 @@ void Reading(int num) {
 
 void Serialprint(int Number) {
 
-  switch (Number) {
+  switch (Number-1) {
     case 0:
       Serial.print(read[0]);
       break;
