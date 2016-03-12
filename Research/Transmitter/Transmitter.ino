@@ -200,7 +200,7 @@ baud_here:
         Serial.println(" | baud rate 19200 :    [6]  |");
         Serial.println(" | baud rate 38400 :    [7]  |");
         Serial.println(" | baud rate 57600 :    [8]  |");
-        Serial.println(" | baud rate 162000 :  [9]  |");
+        Serial.println(" | baud rate 115200 :  [9]  |");
         Serial.println(" - - - - - - - - - - - - - - -");
         while (!Serial.available()) {}
         if (Serial.available()) {
