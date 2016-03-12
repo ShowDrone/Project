@@ -25,6 +25,8 @@ boolean OnePrint = true;
 boolean word_check = false;
 boolean rate_check = false;
 boolean first_loop = false;
+boolean start_end = 0;
+boolean start_end_check = false;
 int32_t check = 0;
 int8_t word_count = 0;
 int32_t delay_time = 0;
@@ -36,6 +38,7 @@ void loop() {
       Serial.println(" - - - - - - - - - - - - - - - - - - -");
       Serial.println(" | Transmiter Data Count:  [1]       |");
       Serial.println(" | baud rate:              [2]       |");
+      Serial.println(" | Start/end Signal:       [3]       |");
       Serial.println(" | All OK:                 [A]       |");
       Serial.println(" |                                   |");
       Serial.println(" | [Now]                             |");
@@ -59,6 +62,13 @@ void loop() {
       else if (rate_check > 99999 && rate_check < 999999) {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("|");
       }
+
+
+      if (start_end == 1)
+        Serial.println(" | start/end:              [On]      |");
+      else if (start_end == 0)
+        Serial.println(" | start/end:              [Off]     |");
+
 
       Serial.print(" - - - - - - - - - - - - - - - - - - -");
       OnePrint = false;
@@ -105,18 +115,17 @@ baud_here:
         for (int i = 0; i < 8; i++)
           Serial.println();
 
-        Serial.println(" Please choose the number from under the table ");
-        Serial.println(" - - - - - - - - - - - - - - -");
-        Serial.println(" | baud rate 300 :      [1]  |");
-        Serial.println(" | baud rate 1200 :     [2]  |");
-        Serial.println(" | baud rate 2400 :     [3]  |");
-        Serial.println(" | baud rate 4800 :     [4]  |");
-        Serial.println(" | baud rate 9600 :     [5]  |");
-        Serial.println(" | baud rate 19200 :    [6]  |");
-        Serial.println(" | baud rate 38400 :    [7]  |");
-        Serial.println(" | baud rate 57600 :    [8]  |");
-        Serial.println(" | baud rate 115200 :  [9]  |");
-        Serial.println(" - - - - - - - - - - - - - - -");
+        Serial.println(" Choose the number from under the table "); Serial.println(" - - - - - - - - - - - -");
+        Serial.println(" | rate 300 :      [1]  |");
+        Serial.println(" | rate 1200 :     [2]  |");
+        Serial.println(" | rate 2400 :     [3]  |");
+        Serial.println(" | rate 4800 :     [4]  |");
+        Serial.println(" | rate 9600 :     [5]  |");
+        Serial.println(" | rate 19200 :    [6]  |");
+        Serial.println(" | rate 38400 :    [7]  |");
+        Serial.println(" | rate 57600 :    [8]  |");
+        Serial.println(" | rate 115200 :   [9]  |");
+        Serial.println(" - - - - - - - - - - - -");
         while (!Serial.available()) {}
         if (Serial.available()) {
           check = Serial.parseInt();
@@ -138,6 +147,35 @@ baud_here:
           rate_check = true;
           delay(2000);
         }
+      }
+      else if (check == '3') {
+
+        for (int i = 0; i < 5; i++)
+          Serial.println();
+
+        Serial.println(" Start/End Signal || On: 1 || Off: 0 ");
+
+        for (int i = 0; i < 9; i++)
+          Serial.println();
+        while (!Serial.available()) {}
+        if (Serial.available()) {
+          check = Serial.parseInt();
+          if (check == 1 || check == 0)
+            start_end = check;
+          if (start_end == 1)
+            Serial.println("You choose Start/End [On] ");
+          if (start_end == 0)
+            Serial.println("You choose Start/End [Off] ");
+
+          start_end_check = true;
+        }
+        else {
+          Serial.println(" You out of the number range ");
+        }
+        for (int i = 0; i < 10; i++)
+          Serial.println();
+        OnePrint = true;
+        delay(2000);
       }
 
       else if (check == 'A') {
@@ -163,7 +201,6 @@ baud_here:
     Serial.println(" - - - - - - - - - - - - - - - - - - -");
     Serial.println(" | [Data reception Place]            |");
     Serial.println(" |                                   |");
-    Serial.println(" | When you escape here,             |");
     Serial.println(" | if you want to come back,         |");
     Serial.println(" | press the [A]                     |");
     Serial.println(" - - - - - - - - - - - - - - - - - - -");
@@ -186,37 +223,42 @@ baud_here:
   }
 
   if (mySerial.available()) {
-    switch (word_count) {
-      case 1:
-        Reading(1);
-        break;
-      case 2:
-        Reading(2);
-        break;
-      case 3:
-        Reading(3);
-        break;
-      case 4:
-        Reading(4);
-        break;
-      case 5:
-        Reading(5);
-        break;
-      case 6:
-        Reading(6);
-        break;
-      case 7:
-        Reading(7);
-        break;
-      case 8:
-        Reading(8);
-        break;
-      case 9:
-        Reading(9);
-        break;
-      case 10:
-        Reading(10);
-        break;
+    if (start_end == 0) {
+      switch (word_count) {
+        case 1:
+          Reading(1);
+          break;
+        case 2:
+          Reading(2);
+          break;
+        case 3:
+          Reading(3);
+          break;
+        case 4:
+          Reading(4);
+          break;
+        case 5:
+          Reading(5);
+          break;
+        case 6:
+          Reading(6);
+          break;
+        case 7:
+          Reading(7);
+          break;
+        case 8:
+          Reading(8);
+          break;
+        case 9:
+          Reading(9);
+          break;
+        case 10:
+          Reading(10);
+          break;
+      }
+    }
+    else if (start_end == 1) {
+
     }
   }
 }
@@ -232,7 +274,7 @@ void Reading(int num) {
 
 void Serialprint(int Number) {
 
-  switch (Number-1) {
+  switch (Number - 1) {
     case 0:
       Serial.print(read[0]);
       break;
