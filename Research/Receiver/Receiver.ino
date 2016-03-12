@@ -130,7 +130,7 @@ baud_here:
             for (int i = 0; i < 7; i++)
               Serial.println();
             baud_rate = Translation(check);
-            Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] ");
+            Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] baudrate");
           }
           for (int i = 0; i < 12; i++)
             Serial.println();
@@ -180,58 +180,53 @@ baud_here:
       rate_check = false;
       word_check = false;
       Serial.println(" Back to the choice place ");
-      for (int i = 0; i < 11; i++)
+      for (int i = 0; i < 12; i++)
         Serial.println();
     }
+    else if (check == 'R') {
 
+      switch (word_count) {
+        case 1:
+          Reading(1);
+          break;
+        case 2:
+          Reading(2);
+          break;
+        case 3:
+          Reading(3);
+          break;
+        case 4:
+          Reading(4);
+          break;
+        case 5:
+          Reading(5);
+          break;
+        case 6:
+          Reading(6);
+          break;
+        case 7:
+          Reading(7);
+          break;
+        case 8:
+          Reading(8);
+          break;
+        case 9:
+          Reading(9);
+          break;
+        case 10:
+          Reading(10);
+          break;
+      }
+    }
   }
-  One_Byte();
-  /*Two_Byte();
-    Three_Byte();
-    Four_Byte();
-    Five_Byte();
-    Six_Byte();
-    Seven_Byte();
-    Eight_Byte();
-    Nine_Byte();
-    Ten_Byte();*/
 }
 
-void One_Byte() {
-  if (mySerial.available()) {
-    read[0] = mySerial.read();
+void Reading(int num) {
+  while (mySerial.available()) {
+    for (int i = 1; i <= num; i++)
+      read[i] = mySerial.read();
   }
-}
-
-void Two_Byte() {
-  if (mySerial.available()) {
-    read[0] = mySerial.read();
-    Serialprint(0);
-  }
-}
-
-void Three_Byte() {
-}
-
-void Four_Byte() {
-}
-
-void Five_Byte() {
-}
-
-void Six_Byte() {
-}
-
-void Seven_Byte() {
-}
-
-void Eight_Byte() {
-}
-
-void Nine_Byte() {
-}
-
-void Ten_Byte() {
+  Serialprint(num);
 }
 
 void Serialprint(int Number) {
