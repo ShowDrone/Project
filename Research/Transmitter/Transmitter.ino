@@ -85,7 +85,7 @@ void loop() {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("    |");
       }
       else if (rate_check > 999 && rate_check < 9999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println(" |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("  |");
       }
       else if (rate_check > 9999 && rate_check < 99999) {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("|");
