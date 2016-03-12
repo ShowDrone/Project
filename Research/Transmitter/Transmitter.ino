@@ -98,24 +98,24 @@ void loop() {
       }
 
       if (start_end == 1)
-        Serial.print(" | start/end:                  [On]     |");
+        Serial.println(" | start/end:                 [On]     |");
       else if (start_end == 0)
-        Serial.print(" | start/end:                  [Off]    |");
+        Serial.println(" | start/end:                 [Off]    |");
 
 
-      Serial.print(" - - - - - - - - - - - - - - - - - - -");
+      Serial.println(" - - - - - - - - - - - - - - - - - - -");
       OnePrint = false;
     }
 
     if (Serial.available()) {
       check = Serial.read();
       if (check == '1') {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
 here:
         Serial.println(" Enter the number of send data from 1 to 10: ");
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -142,18 +142,18 @@ here:
       }
 
       else if (check == '2') {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
         Serial.print(" Please enter the delay time in us: ");
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
         while (!Serial.available()) {}
 
         if (Serial.available()) {
           check = Serial.parseInt();
           delay_time = check;
-          for (int i = 0; i < 20; i++)
+          for (int i = 0; i < 10; i++)
             Serial.println();
           Serial.print("["); Serial.print(delay_time); Serial.print("]");
           Serial.println("us will be delayed by the interval");
@@ -166,12 +166,12 @@ here:
       }
 
       else if (check == '3') {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
 
         Serial.println(" Please enter the proper data from 0 to 255: ");
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -185,7 +185,7 @@ here:
             Serial.println(" You out of the data range ");
             Serial.println(" Please repeat again ");
           }
-          for (int i = 0; i < 12; i++)
+          for (int i = 0; i < 10; i++)
             Serial.println();
           OnePrint = true;
           delay(2000);
@@ -236,12 +236,12 @@ baud_here:
 
       else if (check == '5') {
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 5; i++)
           Serial.println();
 
         Serial.println(" Start/End Signal || On: 1 || Off: 0 ");
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 9; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -259,14 +259,14 @@ baud_here:
           Serial.println(" You out of the number range ");
           Serial.println(" Please repeat again ");
         }
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 10; i++)
           Serial.println();
         OnePrint = true;
         delay(2000);
       }
 
     else if (check == 'A') {
-      for (int i = 0; i < 20; i++)
+      for (int i = 0; i < 10; i++)
         Serial.println();
       if (data_check == true && word_check == true && delay_check == true  && rate_check == true && start_end == true) {
         Serial.println(" You are Succesful the [proper data], [data Count], [delay time], [baud rate] and [start_end] ");
@@ -277,7 +277,7 @@ baud_here:
         Serial.println(" You are not choice another things ");
         OnePrint = true;
       }
-      for (int i = 0; i < 12; i++)
+      for (int i = 0; i < 7; i++)
         Serial.println();
       delay(2000);
     }
