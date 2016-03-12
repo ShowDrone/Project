@@ -75,17 +75,17 @@ void loop() {
         Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]       |");
       }
       else if (what_data > 9) {
-        Serial.print(" | data:                  ["); Serial.print(what_data); Serial.println("]       |");
+        Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]      |");
       }
       else if (what_data > 99 && what_data < 999) {
-        Serial.print(" | data:                  ["); Serial.print(what_data); Serial.println("]      |");
+        Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]     |");
       }
 
       if (rate_check < 999 ) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("|");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("    |");
       }
       else if (rate_check > 999 && rate_check < 9999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("|");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println(" |");
       }
       else if (rate_check > 9999 && rate_check < 99999) {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("|");
@@ -166,25 +166,25 @@ here:
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
-          check = (int16_t)Serial.parseInt();
+          check = Serial.parseInt();
+          if (check <= 255 && check >= 0) {
+          what_data = check;
+          Serial.print("You input the ["); Serial.print(what_data);  Serial.println("] ");
+            data_check = true;
+          }
           if ( check < 0 || check > 255) {
-            Serial.println(" You out of the data range ");
+          Serial.println(" You out of the data range ");
             Serial.println(" Please repeat again ");
           }
-          else {
-            what_data = check;
-            Serial.print("You input the ["); Serial.print(what_data);  Serial.println("] ");
-          }
           for (int i = 0; i < 12; i++)
-            Serial.println();
-          OnePrint = true;
-          data_check = true;
-          delay(2000);
-        }
+        Serial.println();
+        OnePrint = true;
+        delay(2000);
       }
+    }
 
 
-      else if (check == '4') {
+    else if (check == '4') {
 baud_here:
         for (int i = 0; i < 20; i++)
           Serial.println();
@@ -227,7 +227,7 @@ baud_here:
       else if (check == 'A') {
         for (int i = 0; i < 20; i++)
           Serial.println();
-        if (what_data == true && word_check == true && delay_check == true  && rate_check == true) {
+        if (data_check == true && word_check == true && delay_check == true  && rate_check == true) {
           Serial.println(" You are Succesful the [proper data], [data Count] and [delay time]");
           input_check = false;
           first_loop = true;
