@@ -253,7 +253,7 @@ baud_here:
     Serial.println(" | press the [A]                     |");
     Serial.println(" - - - - - - - - - - - - - - - - - - -");
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 4; i++)
       Serial.println();
     delay(3500);
     first_loop = false;
@@ -262,8 +262,13 @@ baud_here:
   Serial.println("Fucking");
   if (Serial.available()) {
     check = mySerial.read();
-    if (check = 'A')
+    if (check = 'A') {
       input_check = true;
+      data_check == false;
+      word_check == false;
+      delay_check == false;
+      rate_check == false;
+    }
   }
 
   for (int i = 1; i <= word_count; i++) {
