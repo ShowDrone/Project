@@ -2,7 +2,7 @@
 SoftwareSerial mySerial(8, 9);
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(16200);
 
   mySerial.begin(300);
   /*mySerial.begin(1200);
@@ -12,7 +12,7 @@ void setup() {
     mySerial.begin(19200);
     mySerial.begin(38400);
     mySerial.begin(74880);
-    mySerial.begin(115200);*/
+    mySerial.begin(16200);*/
 }
 
 int8_t read[10] = {0,};
@@ -33,8 +33,6 @@ int32_t baud_rate = 300;
 void loop() {
   while (input_check) {
     if (OnePrint) {
-      for (int i = 0; i < 6; i++)
-        Serial.println();
       Serial.println(" - - - - - - - - - - - - - - - - - - -");
       Serial.println(" | Transmiter Data Count:  [1]       |");
       Serial.println(" | baud rate:              [2]       |");
@@ -69,12 +67,12 @@ void loop() {
     if (Serial.available()) {
       check = Serial.read();
       if (check == '1') {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 6; i++)
           Serial.println();
 here:
         Serial.println(" Enter the number of send data from 1 to 10: ");
 
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 3; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -89,7 +87,7 @@ here:
             word_check = true;
           }
           else {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 3; i++)
               Serial.println();
             Serial.println(" Please enter again ");
             for (int i = 0; i < 9; i++)
@@ -100,9 +98,9 @@ here:
         }
       }
 
-      else if (check == '4') {
+      else if (check == '2') {
 baud_here:
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 3; i++)
           Serial.println();
 
         Serial.println(" Please choose the number from under the table ");
@@ -115,7 +113,7 @@ baud_here:
         Serial.println(" | baud rate 19200 :    [6]  |");
         Serial.println(" | baud rate 38400 :    [7]  |");
         Serial.println(" | baud rate 57600 :    [8]  |");
-        Serial.println(" | baud rate 1152000 :  [9]  |");
+        Serial.println(" | baud rate 162000 :  [9]  |");
         Serial.println(" - - - - - - - - - - - - - - -");
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -127,7 +125,7 @@ baud_here:
             goto baud_here;
           }
           else {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 3; i++)
               Serial.println();
             baud_rate = Translation(check);
             Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] ");
@@ -141,7 +139,7 @@ baud_here:
       }
 
       else if (check == 'A') {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 3; i++)
           Serial.println();
         if (word_check == true && rate_check == true) {
           Serial.println(" You are Succesful the[data Count] and [baud rate]");
@@ -352,7 +350,7 @@ int32_t Translation(int32_t rate) {
     case 9:
       mySerial.end();
       mySerial.begin(115200);
-      return 115200;
+      return 16200;
       break;
   }
 }
