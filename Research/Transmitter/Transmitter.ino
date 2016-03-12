@@ -25,11 +25,11 @@ boolean rate_check = false;
 boolean first_loop = false;
 int16_t time = 0;
 int16_t pre_time = 0;
-int8_t check = 0;
+int32_t check = 0;
 int8_t word_count = 0;
 int8_t what_data = 0;
 int16_t delay_time = 0;
-int16_t baud_rate = 300;
+int32_t baud_rate = 300;
 
 void loop() {
   while (input_check) {
@@ -56,19 +56,19 @@ void loop() {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]       |");
       }
       else if (delay_time > 9 && delay_time < 99) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]      |");
-      }
-      else if (delay_time > 99 && delay_time < 999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]     |");
-      }
-      else if (delay_time > 999 && delay_time < 9999) {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]    |");
       }
-      else if (delay_time > 9999 && delay_time < 99999) {
+      else if (delay_time > 99 && delay_time < 999) {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]   |");
       }
-      else if (delay_time > 99999 && delay_time < 999999) {
+      else if (delay_time > 999 && delay_time < 9999) {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]  |");
+      }
+      else if (delay_time > 9999 && delay_time < 99999) {
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("] |");
+      }
+      else if (delay_time > 99999 && delay_time < 999999) {
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]|");
       }
 
       if (what_data < 9) {
@@ -85,13 +85,13 @@ void loop() {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]     |");
       }
       else if (rate_check > 999 && rate_check < 9999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]    |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]  |");
       }
       else if (rate_check > 9999 && rate_check < 99999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]   |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("] |");
       }
       else if (rate_check > 99999 && rate_check < 999999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]  |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]|");
       }
 
       Serial.print(" - - - - - - - - - - - - - - - - - - -");
@@ -110,7 +110,7 @@ here:
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
-          check = Serial.read();
+          check = Serial.parseInt();
           if ( 1 <= check && check <= 10) { // ASKII Code
             word_count = check;
             Serial.print(" You choose ["); Serial.print(word_count); Serial.println("] data transmission ");
@@ -271,7 +271,7 @@ baud_here:
   }
 }
 
-int Translation(int rate) {
+int32_t Translation(int32_t rate) {
   switch (rate) {
     case 1:
       mySerial.end();
