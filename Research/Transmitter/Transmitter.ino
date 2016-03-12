@@ -56,19 +56,19 @@ void loop() {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]       |");
       }
       else if (delay_time > 9 && delay_time < 99) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]    |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]      |");
       }
       else if (delay_time > 99 && delay_time < 999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]   |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]    |");
       }
       else if (delay_time > 999 && delay_time < 9999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]  |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]   |");
       }
       else if (delay_time > 9999 && delay_time < 99999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("] |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]  |");
       }
       else if (delay_time > 99999 && delay_time < 999999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]|");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("] |");
       }
 
       if (what_data < 9) {
@@ -78,7 +78,7 @@ void loop() {
         Serial.print(" | data:                  ["); Serial.print(what_data); Serial.println("]       |");
       }
       else if (what_data > 99 && what_data < 999) {
-        Serial.print(" | data:                  ["); Serial.print(what_data); Serial.println("]       |");
+        Serial.print(" | data:                  ["); Serial.print(what_data); Serial.println("]      |");
       }
 
       if (rate_check < 999 ) {
