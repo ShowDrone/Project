@@ -62,7 +62,7 @@ void loop() {
 
       Serial.print(" - - - - - - - - - - - - - - - - - - -");
       OnePrint = false;
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 4; i++)
         Serial.println();
     }
 
@@ -74,7 +74,7 @@ void loop() {
 here:
         Serial.println(" Enter the number of send data from 1 to 10: ");
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 8; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
@@ -89,7 +89,7 @@ here:
             word_check = true;
           }
           else {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
               Serial.println();
             Serial.println(" Please enter again ");
             for (int i = 0; i < 9; i++)
@@ -102,7 +102,7 @@ here:
 
       else if (check == '2') {
 baud_here:
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 8; i++)
           Serial.println();
 
         Serial.println(" Please choose the number from under the table ");
@@ -127,7 +127,7 @@ baud_here:
             goto baud_here;
           }
           else {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
               Serial.println();
             baud_rate = Translation(check);
             Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] ");
@@ -141,7 +141,7 @@ baud_here:
       }
 
       else if (check == 'A') {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 8; i++)
           Serial.println();
         if (word_check == true && rate_check == true) {
           Serial.println(" You are Succesful the[data Count] and [baud rate]");
