@@ -25,13 +25,13 @@ boolean rate_check = false;
 boolean start_end_check = false;
 boolean first_loop = false;
 boolean start_end = 0;
-int16_t time = 0;
-int16_t pre_time = 0;
-int32_t what_data = 0;
-int32_t check = 0;
+unsigned int time = 0;
+unsigned int pre_time = 0;
+unsigned int what_data = 0;
+unsigned int check = 0;
 int8_t word_count = 0;
-int32_t delay_time = 0;
-int32_t baud_rate = 300;
+unsigned int delay_time = 0;
+unsigned int baud_rate = 300;
 
 void loop() {
   while (input_check) {
@@ -70,9 +70,6 @@ void loop() {
       else if (delay_time > 9999 && delay_time < 99999) {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]   |");
       }
-      else if (delay_time > 99999 && delay_time < 999999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]  |");
-      }
 
       if (what_data < 9) {
         Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]       |");
@@ -98,10 +95,9 @@ void loop() {
       }
 
       if (start_end == 1)
-        Serial.println(" | start/end:                 [On]     |");
+        Serial.println(" | start/end:              [On]      |");
       else if (start_end == 0)
-        Serial.println(" | start/end:                 [Off]    |");
-
+        Serial.println(" | start/end:              [Off]     |");
 
       Serial.println(" - - - - - - - - - - - - - - - - - - -");
       OnePrint = false;
@@ -113,7 +109,7 @@ void loop() {
         for (int i = 0; i < 10; i++)
           Serial.println();
 here:
-        Serial.println(" Enter the number of send data from 1 to 10: ");
+        Serial.println(" Input the 1~10 Number ");
 
         for (int i = 0; i < 10; i++)
           Serial.println();
@@ -144,7 +140,7 @@ here:
       else if (check == '2') {
         for (int i = 0; i < 10; i++)
           Serial.println();
-        Serial.print(" Please enter the delay time in us: ");
+        Serial.print(" input the delay time in us: ");
 
         for (int i = 0; i < 10; i++)
           Serial.println();
@@ -169,7 +165,7 @@ here:
         for (int i = 0; i < 10; i++)
           Serial.println();
 
-        Serial.println(" Please enter the proper data from 0 to 255: ");
+        Serial.println(" input the proper data from 0 to 255: ");
 
         for (int i = 0; i < 10; i++)
           Serial.println();
@@ -183,7 +179,6 @@ here:
           }
           if ( check < 0 || check > 255) {
             Serial.println(" You out of the data range ");
-            Serial.println(" Please repeat again ");
           }
           for (int i = 0; i < 10; i++)
             Serial.println();
@@ -199,24 +194,23 @@ baud_here:
         for (int i = 0; i < 8; i++)
           Serial.println();
 
-        Serial.println(" Please choose the number from under the table ");
-        Serial.println(" - - - - - - - - - - - - - - -");
-        Serial.println(" | baud rate 300 :      [1]  |");
-        Serial.println(" | baud rate 1200 :     [2]  |");
-        Serial.println(" | baud rate 2400 :     [3]  |");
-        Serial.println(" | baud rate 4800 :     [4]  |");
-        Serial.println(" | baud rate 9600 :     [5]  |");
-        Serial.println(" | baud rate 19200 :    [6]  |");
-        Serial.println(" | baud rate 38400 :    [7]  |");
-        Serial.println(" | baud rate 57600 :    [8]  |");
-        Serial.println(" | baud rate 115200 :  [9]  |");
-        Serial.println(" - - - - - - - - - - - - - - -");
+        Serial.println(" Choose the number from under the table ");
+        Serial.println(" - - - - - - - - - - - -");
+        Serial.println(" | rate 300 :      [1]  |");
+        Serial.println(" | rate 1200 :     [2]  |");
+        Serial.println(" | rate 2400 :     [3]  |");
+        Serial.println(" | rate 4800 :     [4]  |");
+        Serial.println(" | rate 9600 :     [5]  |");
+        Serial.println(" | rate 19200 :    [6]  |");
+        Serial.println(" | rate 38400 :    [7]  |");
+        Serial.println(" | rate 57600 :    [8]  |");
+        Serial.println(" | rate 115200 :   [9]  |");
+        Serial.println(" - - - - - - - - - - - -");
         while (!Serial.available()) {}
         if (Serial.available()) {
           check = Serial.parseInt();
           if ( check < 0 || check > 9) {
             Serial.println(" You out of the number range ");
-            Serial.println(" Please repeat again ");
             delay(2500);
             goto baud_here;
           }
@@ -224,7 +218,7 @@ baud_here:
             for (int i = 0; i < 7; i++)
               Serial.println();
             baud_rate = Translation(check);
-            Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] baudrate");
+            Serial.print("You choice the ["); Serial.print(baud_rate);  Serial.println("] ");
           }
           for (int i = 0; i < 12; i++)
             Serial.println();
@@ -257,7 +251,6 @@ baud_here:
         }
         else {
           Serial.println(" You out of the number range ");
-          Serial.println(" Please repeat again ");
         }
         for (int i = 0; i < 10; i++)
           Serial.println();
@@ -265,61 +258,75 @@ baud_here:
         delay(2000);
       }
 
-    else if (check == 'A') {
-      for (int i = 0; i < 10; i++)
-        Serial.println();
-      if (data_check == true && word_check == true && delay_check == true  && rate_check == true && start_end == true) {
-        Serial.println(" You are Succesful the [proper data], [data Count], [delay time], [baud rate] and [start_end] ");
-        input_check = false;
-        first_loop = true;
+      else if (check == 'A') {
+        for (int i = 0; i < 10; i++)
+          Serial.println();
+        if (data_check == true && word_check == true && delay_check == true  && rate_check == true && start_end == true) {
+          Serial.println(" You are Succesful");
+          input_check = false;
+          first_loop = true;
+        }
+        else {
+          Serial.println(" You are not choice another things ");
+          OnePrint = true;
+        }
+        for (int i = 0; i < 7; i++)
+          Serial.println();
+        delay(2000);
       }
-      else {
-        Serial.println(" You are not choice another things ");
-        OnePrint = true;
+    }
+  }
+
+  if (first_loop == true) {
+
+    Serial.println(" - - - - - - - - - - - - - - - - - - -");
+    Serial.println(" |                                   |");
+    Serial.println(" | if you want to come back,         |");
+    Serial.println(" | press the [A]                     |");
+    Serial.println(" - - - - - - - - - - - - - - - - - - -");
+
+    for (int i = 0; i < 4; i++)
+      Serial.println();
+    delay(2800);
+    first_loop = false;
+  }
+
+  Serial.println("Fucking");
+  if (Serial.available()) {
+    check = mySerial.read();
+    if (check = 'A') {
+      input_check = true;
+      data_check = false;
+      word_check = false;
+      delay_check = false;
+      rate_check = false;
+      start_end_check == false;
+    }
+  }
+  if (start_end == 0) {
+    for (int i = 1; i <= word_count; i++) {
+      mySerial.write(what_data);
+      delayMicroseconds(delay_time);
+    }
+  }
+  else if (start_end == 1) {
+    for (int i = 1; i <= word_count; i++) {
+      if (i == 1) {
+        mySerial.write('S');
+        delayMicroseconds(delay_time);
       }
-      for (int i = 0; i < 7; i++)
-        Serial.println();
-      delay(2000);
+      mySerial.write(what_data);
+      delayMicroseconds(delay_time);
+
+      if (i == word_count) {
+        mySerial.write('E');
+        delayMicroseconds(delay_time);
+      }
     }
   }
 }
 
-if (first_loop == true) {
-
-  Serial.println(" - - - - - - - - - - - - - - - - - - -");
-  Serial.println(" | [Data Transmission Place]         |");
-  Serial.println(" |                                   |");
-  Serial.println(" | When you escape here,             |");
-  Serial.println(" | if you want to come back,         |");
-  Serial.println(" | press the [A]                     |");
-  Serial.println(" - - - - - - - - - - - - - - - - - - -");
-
-  for (int i = 0; i < 4; i++)
-    Serial.println();
-  delay(3500);
-  first_loop = false;
-}
-
-Serial.println("Fucking");
-if (Serial.available()) {
-  check = mySerial.read();
-  if (check = 'A') {
-    input_check = true;
-    data_check = false;
-    word_check = false;
-    delay_check = false;
-    rate_check = false;
-    start_end_check == false;
-  }
-}
-
-for (int i = 1; i <= word_count; i++) {
-  mySerial.write(what_data);
-  delayMicroseconds(delay_time);
-}
-}
-
-int32_t Translation(int32_t rate) {
+unsigned int Translation(unsigned int rate) {
   switch (rate) {
     case 1:
       mySerial.end();
