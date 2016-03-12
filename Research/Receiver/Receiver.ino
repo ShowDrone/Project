@@ -152,13 +152,39 @@ baud_here:
           Serial.println(" You are not choice another things ");
           OnePrint = true;
         }
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 12; i++)
           Serial.println();
         delay(2000);
       }
     }
   }
 
+  if (first_loop == true) {
+    Serial.println(" - - - - - - - - - - - - - - - - - - -");
+    Serial.println(" | [Data reception Place]            |");
+    Serial.println(" |                                   |");
+    Serial.println(" | When you escape here,             |");
+    Serial.println(" | if you want to come back,         |");
+    Serial.println(" | press the [A]                     |");
+    Serial.println(" - - - - - - - - - - - - - - - - - - -");
+
+    for (int i = 0; i < 4; i++)
+      Serial.println();
+    delay(3500);
+    first_loop = false;
+  }
+  if (Serial.available()) {
+    check = Serial.read();
+    if (check == 'A') {
+      input_check = true;
+      rate_check = false;
+      word_check = false;
+      Serial.println(" Back to the choice place ");
+      for (int i = 0; i < 11; i++)
+        Serial.println();
+    }
+
+  }
   One_Byte();
   /*Two_Byte();
     Three_Byte();
