@@ -59,16 +59,16 @@ void loop() {
         Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]      |");
       }
       else if (delay_time > 99 && delay_time < 999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]    |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]     |");
       }
       else if (delay_time > 999 && delay_time < 9999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]   |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]    |");
       }
       else if (delay_time > 9999 && delay_time < 99999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]  |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]   |");
       }
       else if (delay_time > 99999 && delay_time < 999999) {
-        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("] |");
+        Serial.print(" | delay:                  ["); Serial.print(delay_time); Serial.println("]  |");
       }
 
       if (what_data < 9) {
@@ -82,16 +82,16 @@ void loop() {
       }
 
       if (rate_check < 999 ) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]     |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]"); Serial.print("   |");
       }
       else if (rate_check > 999 && rate_check < 9999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]  |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]"); Serial.print("  |");
       }
       else if (rate_check > 9999 && rate_check < 99999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("] |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.print(" |");
       }
       else if (rate_check > 99999 && rate_check < 999999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]|");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.print("|");
       }
 
       Serial.print(" - - - - - - - - - - - - - - - - - - -");
@@ -166,7 +166,7 @@ here:
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
-          check = Serial.parseInt();
+          check = (int8_t)Serial.parseInt();
           if ( check < 0 || check > 255) {
             Serial.println(" You out of the data range ");
             Serial.println(" Please repeat again ");
