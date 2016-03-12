@@ -27,7 +27,7 @@ int16_t time = 0;
 int16_t pre_time = 0;
 int32_t check = 0;
 int8_t word_count = 0;
-int8_t what_data = 0;
+int16_t what_data = 0;
 int16_t delay_time = 0;
 int32_t baud_rate = 300;
 
@@ -82,16 +82,16 @@ void loop() {
       }
 
       if (rate_check < 999 ) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]"); Serial.print("   |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("   |");
       }
       else if (rate_check > 999 && rate_check < 9999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]"); Serial.print("  |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("  |");
       }
       else if (rate_check > 9999 && rate_check < 99999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.print(" |");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println(" |");
       }
       else if (rate_check > 99999 && rate_check < 999999) {
-        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.print("|");
+        Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.print("]"); Serial.println("|");
       }
 
       Serial.print(" - - - - - - - - - - - - - - - - - - -");
@@ -266,7 +266,7 @@ baud_here:
   }
 
   for (int i = 1; i <= word_count; i++) {
-    mySerial.write(255);
+    mySerial.write(what_data);
     delayMicroseconds(delay_time);
   }
 }
