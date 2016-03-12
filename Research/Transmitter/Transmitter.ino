@@ -75,10 +75,10 @@ void loop() {
         Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]       |");
       }
       else if (what_data > 9) {
-        Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]      |");
+        Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]     |");
       }
       else if (what_data > 99 && what_data < 999) {
-        Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]     |");
+        Serial.print(" | data:                   ["); Serial.print(what_data); Serial.println("]    |");
       }
 
       if (rate_check < 999 ) {
@@ -258,8 +258,9 @@ baud_here:
     delay(3500);
     first_loop = false;
   }
+  
   Serial.println("Fucking");
-  if (mySerial.available()) {
+  if (Serial.available()) {
     check = mySerial.read();
     if (check = 'A')
       input_check = true;
