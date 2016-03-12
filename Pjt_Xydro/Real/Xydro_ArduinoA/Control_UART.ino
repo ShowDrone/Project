@@ -14,7 +14,7 @@ void Control_UART_Update() {
   int gotoCheck = 0;
 
   while (mySerial.available()) {
-here: // [Goto A]
+    here: // [Goto A]
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -50,6 +50,7 @@ here: // [Goto A]
     buf[2] = 129;
     buf[3] = 0;
     buf[4] = 129;
+    Serial.println(" No Control Data ");
   }
 
   if (!Loop) {
