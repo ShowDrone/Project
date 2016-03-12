@@ -40,7 +40,7 @@ void loop() {
       Serial.println(" | Transmiter Data Count:  [1]       |");
       Serial.println(" | delay time:             [2]       |");
       Serial.println(" | Transmiter proper Data: [3]       |");
-      //Serial.println(" | baud rate:              [4]       |");
+      Serial.println(" | baud rate:              [4]       |");
       Serial.println(" | All OK:                 [A]       |");
       Serial.println(" |                                   |");
       Serial.println(" | [Now]                             |");
@@ -81,7 +81,7 @@ void loop() {
         Serial.print(" | data:                  ["); Serial.print(what_data); Serial.println("]       |");
       }
 
-     /* if (rate_check < 999 ) {
+      if (rate_check < 999 ) {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]     |");
       }
       else if (rate_check > 999 && rate_check < 9999) {
@@ -92,7 +92,7 @@ void loop() {
       }
       else if (rate_check > 99999 && rate_check < 999999) {
         Serial.print(" | rate:                   ["); Serial.print(baud_rate); Serial.println("]  |");
-      }*/
+      }
 
       Serial.print(" - - - - - - - - - - - - - - - - - - -");
       OnePrint = false;
@@ -104,15 +104,15 @@ void loop() {
         for (int i = 0; i < 20; i++)
           Serial.println();
 here:
-        Serial.println(" Enter the number of send data from 0 to 9 (real 1~10) : ");
+        Serial.println(" Enter the number of send data from 1 to 10: ");
 
         for (int i = 0; i < 12; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
-          check = (char)Serial.read();
-          if ( '0' <= check && check <= '9') { // ASKII Code
-            word_count = check - 48 + 1;
+          check = Serial.read();
+          if ( 1 <= check && check <= 10) { // ASKII Code
+            word_count = check;
             Serial.print(" You choose ["); Serial.print(word_count); Serial.println("] data transmission ");
             for (int i = 0; i < 12; i++)
               Serial.println();
@@ -184,8 +184,8 @@ here:
       }
 
 
-      /*else if (check == '4') {
-        baud_here:
+      else if (check == '4') {
+baud_here:
         for (int i = 0; i < 20; i++)
           Serial.println();
 
@@ -222,8 +222,8 @@ here:
           rate_check = true;
           delay(2000);
         }
-        }
-      */
+      }
+
       else if (check == 'A') {
         for (int i = 0; i < 20; i++)
           Serial.println();
@@ -271,7 +271,6 @@ here:
   }
 }
 
-/*
 int Translation(int rate) {
   switch (rate) {
     case 1:
@@ -320,4 +319,4 @@ int Translation(int rate) {
       return 115200;
       break;
   }
-}*/
+}
