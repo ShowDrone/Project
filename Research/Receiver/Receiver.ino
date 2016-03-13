@@ -85,7 +85,7 @@ void loop() {
         for (int i = 0; i < 3; i++)
           Serial.println();
 here:
-        Serial.println(" Enter the number of send data from 1 to 10: ");
+        Serial.println(" Enter the number of reception data from 1 to 10: ");
 
         for (int i = 0; i < 12; i++)
           Serial.println();
@@ -275,12 +275,13 @@ again:
         sum += read[i];
       }
       check = CheckSum(sum);
+      Serial.print(" /"); Serial.print(check); Serial.print("/ ");
       sum = 0;
       if (check != 0)
         goto again;
     }
   }
-  else if (start_end == 0) {
+  else if (start_end == 1) {
     if (mySerial.available()) {
       check = mySerial.read();
       if (check == 'S')
@@ -336,11 +337,13 @@ void Serialprint(int Number) {
     case 1:
       Serial.print(read[0]);
       Serial.print(" ");
-      Serial.print(read[1]);
+      Serial.print(read[1]); 
+      Serial.print(" ");
+      Serial.print(time);
       break;
 
     case 2:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -353,7 +356,7 @@ void Serialprint(int Number) {
       break;
 
     case 3:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -366,7 +369,7 @@ void Serialprint(int Number) {
       break;
 
     case 4:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -379,7 +382,7 @@ void Serialprint(int Number) {
       break;
 
     case 5:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -392,7 +395,7 @@ void Serialprint(int Number) {
       break;
 
     case 6:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -405,7 +408,7 @@ void Serialprint(int Number) {
       break;
 
     case 7:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -418,7 +421,7 @@ void Serialprint(int Number) {
       break;
 
     case 8:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
@@ -431,7 +434,7 @@ void Serialprint(int Number) {
       break;
 
     case 9:
-      for (int i = 0; i <= Number; i++) {
+      for (int i = 0; i < Number; i++) {
         if ( i != 0)
           Serial.print(" ");
         Serial.print(read[i]);
