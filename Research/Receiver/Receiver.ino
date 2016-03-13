@@ -15,7 +15,7 @@ void setup() {
     mySerial.begin(16200);*/
 }
 
-int8_t read[10] = {0,};
+int8_t read[12] = {0,};
 
 int16_t time = 0;
 int16_t pre_time = 0;
@@ -27,10 +27,13 @@ boolean rate_check = false;
 boolean first_loop = false;
 boolean start_end = 0;
 boolean start_end_check = false;
+boolean start_signal = false;
+boolean end_signal = false;
 int32_t check = 0;
 int8_t word_count = 0;
 int32_t delay_time = 0;
 int32_t baud_rate = 300;
+int sum = 0;
 
 void loop() {
   while (input_check) {
@@ -258,21 +261,69 @@ baud_here:
           break;
       }
     }
-    else if (start_end == 1) {
-
-    }
     pre_time = micros();
   }
 }
 
 
 void Reading(int num) {
-  while (mySerial.available()) {
-    for (int i = 1; i <= num; i++)
-      read[i] = mySerial.read();
+again:
+  if (start_end == 0) {
+    if (mySerial.available()) {
+      for (int i = 1; i <= num; i++) {
+        read[i] = mySerial.read();
+        sum += read[i];
+      }
+      check = CheckSum(sum);
+      sum = 0;
+      if (check != 0)
+        goto again;
+    }
   }
-  Serialprint(num);
+  else if (start_end == 0) {
+    if (mySerial.available()) {
+      check = mySerial.read();
+      if (check == 'S')
+        start_signal = true;
+      else
+        goto again;
+
+      if (start_signal) {
+        if (mySerial.available()) {
+          for (int i = 1; i <= num + 2; i++) {
+            read[i] = mySerial.read();
+            sum += read[i];
+          }
+        }
+        check = CheckSum(sum);
+        sum = 0;
+        if (check != 0) {
+          start_signal = 0;
+          goto again;
+        }
+
+        else
+          end_signal = 1;
+      }
+
+      if (end_signal) {
+        if (mySerial.available()) {
+          check = mySerial.read();
+          if (check == 'E') {
+          }
+          else {
+            start_signal = 0;
+            end_signal = 0;
+            goto again;
+          }
+        }
+      }
+    }
+  }
+  
+      Serialprint(num);
 }
+
 
 void Serialprint(int Number) {
 
@@ -446,4 +497,13 @@ int32_t Translation(int32_t rate) {
       return 16200;
       break;
   }
+}
+
+char CheckSum(int sum) {
+  int total = sum;
+  sum &= 0xFF;
+  sum = ~sum + 1;
+  total = total + sum;
+  total &= 0xFF;
+  return total;
 }
