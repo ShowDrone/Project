@@ -13,7 +13,6 @@ void setup() {
     mySerial.begin(38400);
     mySerial.begin(74880);
     mySerial.begin(115200);*/
-
 }
 
 boolean input_check = true;
