@@ -270,7 +270,7 @@ void Reading(int num) {
 again:
   if (start_end == 0) {
     if (mySerial.available()) {
-      for (int i = 1; i <= num; i++) {
+      for (int i = 0; i < num; i++) {
         read[i] = mySerial.read();
         sum += read[i];
       }
@@ -321,14 +321,14 @@ again:
       }
     }
   }
-  
-      Serialprint(num);
+ 
+   Serialprint(num);
 }
 
 
 void Serialprint(int Number) {
-
-  switch (Number - 1) {
+  
+  switch (Number-1) {
     case 0:
       Serial.print(read[0]);
       Serial.print("  "); Serial.print(time);
