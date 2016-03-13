@@ -27,7 +27,7 @@ boolean start_end = 0;
 unsigned int time = 0;
 unsigned int pre_time = 0;
 unsigned int what_data = 0;
-unsigned int check = 0;
+int32_t check = 0;
 int8_t word_count = 0;
 unsigned int delay_time = 0;
 unsigned int baud_rate = 300;
@@ -164,19 +164,19 @@ here:
         for (int i = 0; i < 10; i++)
           Serial.println();
 
-        Serial.println(" input the proper data from 0 to 255: ");
+        Serial.println(" input the proper data from -127 to 128: ");
 
         for (int i = 0; i < 10; i++)
           Serial.println();
         while (!Serial.available()) {}
         if (Serial.available()) {
           check = Serial.parseInt();
-          if (check <= 255 && check >= 0) {
+          if (check <= 128 && check >= -127) {
             what_data = check;
             Serial.print("You input the ["); Serial.print(what_data);  Serial.println("] ");
             data_check = true;
           }
-          if ( check < 0 || check > 255) {
+          if ( check < -127 || check > 128) {
             Serial.println(" You out of the data range ");
           }
           for (int i = 0; i < 10; i++)
@@ -289,8 +289,6 @@ baud_here:
     delay(2800);
     first_loop = false;
   }
-
-  Serial.println("Fucking");
   if (Serial.available()) {
     check = mySerial.read();
     if (check = 'A') {
@@ -306,6 +304,7 @@ baud_here:
     for (int i = 1; i <= word_count; i++) {
       mySerial.write(what_data);
       delayMicroseconds(delay_time);
+      Serial.println("Hi:"+(String)i);
     }
   }
   else if (start_end == 1) {
