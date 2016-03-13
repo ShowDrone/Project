@@ -261,7 +261,7 @@ baud_here:
       else if (check == 'A') {
         for (int i = 0; i < 10; i++)
           Serial.println();
-        if (data_check == true && word_check == true && delay_check == true  && rate_check == true && start_end == true) {
+        if (data_check == true && word_check == true && delay_check == true  && rate_check == true && start_end_check == true) {
           Serial.println(" You are Succesful");
           input_check = false;
           first_loop = true;
