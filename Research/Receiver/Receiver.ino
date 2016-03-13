@@ -223,6 +223,7 @@ baud_here:
   }
 
   if (mySerial.available()) {
+    time = micros() - pre_time;
     if (start_end == 0) {
       switch (word_count) {
         case 1:
@@ -260,6 +261,7 @@ baud_here:
     else if (start_end == 1) {
 
     }
+    pre_time = micros();
   }
 }
 
@@ -277,6 +279,7 @@ void Serialprint(int Number) {
   switch (Number - 1) {
     case 0:
       Serial.print(read[0]);
+      Serial.print("  "); Serial.print(time);
       break;
 
     case 1:
@@ -292,6 +295,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -302,6 +308,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -312,6 +321,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -322,6 +334,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -332,6 +347,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -342,6 +360,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -352,6 +373,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
 
@@ -362,6 +386,9 @@ void Serialprint(int Number) {
         Serial.print(read[i]);
         if ( i != Number)
           Serial.print(" ");
+        if (i == Number) {
+          Serial.print("  "); Serial.print(time);
+        }
       }
       break;
   }
@@ -420,4 +447,3 @@ int32_t Translation(int32_t rate) {
       break;
   }
 }
-
