@@ -12,7 +12,7 @@ void Control_UART_init() {
 
 void Control_UART_Update() {
   while (mySerial.available()) {
-    here:
+here:
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -40,7 +40,7 @@ void Control_UART_Update() {
       buf[4] = Lastbuf[4];
     }
   }
-  else {
+  if (mySerial.available() < 1) {
     buf[1] = 129;
     buf[2] = 129;
     buf[3] = 0;
