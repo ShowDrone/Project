@@ -45,7 +45,7 @@ void Control_UART_Update() {
     if ((buf[4] > 176) || (buf[4] < 80))
       buf[4] = Lastbuf[4];
   }
-  if (mySerial.available() < 1) {
+  else {
     buf[1] = 129;
     buf[2] = 129;
     buf[3] = 0;

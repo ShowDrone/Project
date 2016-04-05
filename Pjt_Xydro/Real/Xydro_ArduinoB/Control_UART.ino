@@ -40,7 +40,7 @@ void Control_UART_Update() {
       buf[4] = Lastbuf[4];
     }
   }
-  if (mySerial.available() < 1) {
+  else {
     buf[1] = 129;
     buf[2] = 129;
     buf[3] = 0;
