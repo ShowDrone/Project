@@ -55,7 +55,7 @@ void PID_Update() {
 
   if (uartTime + 5 < millis()) {
     Control_UART_Update();
-    Status_UART_Update();
+    //Status_UART_Update();
     uartTime = millis();
   }
   

@@ -30,7 +30,7 @@ void setup() {
   
   AccelGyro_init();
   Control_UART_init();
-  Status_UART_init();
+  //Status_UART_init();
   PID_init();
   
   Serial.println("Start");
