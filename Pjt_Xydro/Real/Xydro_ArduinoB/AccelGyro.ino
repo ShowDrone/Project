@@ -24,10 +24,18 @@ float DT = 0.01;
 void AccelGyro_init() {
   Wire.begin();
   accelGyroMag.initialize();
+  while (1) {
+    int16_t Connection = accelGyroMag.testConnection();
+    if (Connection == true); {
+      Serial.println("Connection Success");
+      delay(500);
+      break;
+    }
+  }
 }
 
 void AccelGyro_Update() {
-    accelGyroMag.getMotion6(&AcX,&AcY,&AcZ,&GyX,&GyY,&GyZ);
+  accelGyroMag.getMotion6(&AcX, &AcY, &AcZ, &GyX, &GyY, &GyZ);
 
   //가속도 계산 Rad to Deg
   pitchAcc = atan2(AcY, AcZ) * 180 / PI; // arctan(X,Z)

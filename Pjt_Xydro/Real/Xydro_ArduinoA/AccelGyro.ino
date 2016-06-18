@@ -22,6 +22,14 @@ float DT = 0.01;
 void AccelGyro_init() {
   Wire.begin();
   accelGyroMag.initialize();
+  while (1) {
+    int16_t Connection = accelGyroMag.testConnection();
+    if (Connection == true); {
+      Serial.println("Connection Success");
+      delay(500);
+      break;
+    }
+  }
 }
 
 void AccelGyro_Update() {
