@@ -25,6 +25,9 @@ BLDC_B 11
   Test Board : Arduino Uno
 */
 
+// Status_UART B가 Transmit
+// 로터 부분에 들어감
+
 void setup() {
   Serial.begin(19200);
   
@@ -37,7 +40,6 @@ void setup() {
 int time_pre = 0;
 
 void loop() {
-  
   int time = millis() - time_pre;
   time_pre = millis();
   //Serial.print("time: "); Serial.print(time);
@@ -45,3 +47,4 @@ void loop() {
   Transmiter_Update();
   PID_Update();
 }
+

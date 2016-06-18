@@ -54,7 +54,7 @@ void Status_UART_Update() {
     FinishCheck();
 
 
-  // StatusPrint();
+  StatusPrint();
 
   yourSerialreset();
 
@@ -106,7 +106,8 @@ void RollCheck() {
       count++;
     }
 
-    else if (count == 3) {;
+    else if (count == 3) {
+      ;
       int Confirm = CheckSum(sum);
       if (Confirm == 0) {
         PITCH = true;
@@ -269,26 +270,26 @@ void StatusPrint() {
   Serial.print(" roll_B:"); Serial.print(roll_B);
   Serial.print(" pitch_B:"); Serial.print(pitch_B);
   Serial.print(" yaw_B:"); Serial.print(yaw_B);
-  Serial.print("time: "); Serial.println(time);
+  Serial.print(" time: "); Serial.println(time);
 }
 
 void FaildPrint(char Check) {
   /*
-  if (Check == 0x00)
+    if (Check == 0x00)
     Serial.print(" STARTING EROOR!!! ");
 
-  else if (Check == 0x01)
+    else if (Check == 0x01)
     Serial.print(" ROLL ERROR!!! ");
 
-  else if (Check == 0x02)
+    else if (Check == 0x02)
     Serial.print(" PITCH ERROR!!! ");
 
-  else if (Check == 0x03)
+    else if (Check == 0x03)
     Serial.print(" YAW ERROR!!! ");
 
-  else if (Check == 0x04)
+    else if (Check == 0x04)
     Serial.print(" Finish ERROR!!! ");
 
-  Serial.println();
+    Serial.println();
   */
 }

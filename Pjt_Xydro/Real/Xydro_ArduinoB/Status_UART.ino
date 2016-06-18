@@ -38,11 +38,6 @@ struct Axis Z;
 
 void Transmiter_Update() {
 
-  roll = 1.45;
-  pitch = 2.45;
-  yaw = 3.45;
-
-
   X.integer = roll - (int)roll;
   X.realN = roll - X.integer;
   X.integer *= 100;

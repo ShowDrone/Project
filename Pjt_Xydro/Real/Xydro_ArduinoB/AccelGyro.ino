@@ -51,7 +51,7 @@ void AccelGyro_Update() {
   //double XH = MgX*cos(pitch)+MgY*sin(roll)*sin(pitch)-MgZ*cos(roll)*sin(pitch);
   //double YH = MgY*cos(roll)+MgZ*sin(roll);
 
-  //AxisPrint();
+  AxisPrint();
 }
 
 void AxisPrint() {
