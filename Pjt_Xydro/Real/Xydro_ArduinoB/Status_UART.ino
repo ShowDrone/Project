@@ -3,8 +3,8 @@
 AltSoftSerial yourSerial;
 
 struct Axis {
-  int realN = 0;
-  double integer = 0;
+  double realN = 0;
+  int integer = 0;
 };
 
 
@@ -41,46 +41,63 @@ struct Axis Y;
 struct Axis Z;
 
 void Transmiter_Update() {
+  roll = 20.1;
+  pitch = 10.1;
+  yaw = 0.1;
+  
+  X.realN = roll - (int)roll;
+  X.integer = roll - X.realN;
+  X.realN *= 100;
+  //Serial.println((int)X.realN);
 
-  X.integer = roll - (int)roll;
-  X.realN = roll - X.integer;
-  X.integer *= 100;
-  //Serial.println((int)X.integer);
+  Y.realN = pitch - (int)pitch;
+  Y.integer = pitch - Y.realN;
+  Y.realN *= 100;
 
-  Y.integer = pitch - (int)pitch;
-  Y.realN = pitch - Y.integer;
-  Y.integer *= 100;
+  Z.realN = yaw - (int)yaw;
+  Z.integer = yaw - Z.realN;
+  Z.realN *= 100;
 
-  Z.integer = yaw - (int)yaw;
-  Z.realN = yaw - Z.integer;
-  Z.integer *= 100;
+  StatusPrint();
 
   yourSerial.write('S');
   delayMicroseconds(130);
 
   yourSerial.write('X');
   delayMicroseconds(130);
-  yourSerial.write(X.realN);
+  yourSerial.write(X.integer);
   delayMicroseconds(130);
-  yourSerial.write((int)X.integer);
+  yourSerial.write((int)X.realN);
   delayMicroseconds(130);
 
   yourSerial.write('Y');
   delayMicroseconds(130);
-  yourSerial.write(Y.realN);
+  yourSerial.write(Y.integer);
   delayMicroseconds(130);
-  yourSerial.write((int)Y.integer);
+  yourSerial.write((int)Y.realN);
   delayMicroseconds(130);
 
   yourSerial.write('Z');
   delayMicroseconds(130);
-  yourSerial.write(Z.realN);
+  yourSerial.write(Z.integer);
   delayMicroseconds(130);
-  yourSerial.write((int)Z.integer);
+  yourSerial.write((int)Z.realN);
   delayMicroseconds(130);
 
   yourSerial.write('F');
+}
 
+void StatusPrint() {
+  Serial.print("X: ");
+  Serial.print(X.integer); Serial.print(" "); Serial.print(X.realN); 
+  Serial.print(" Y: ");
+  Serial.print(Y.integer); Serial.print(" "); Serial.print(Y.realN);
+  Serial.print(" Z: ");
+  Serial.print(Z.integer); Serial.print(" "); Serial.println(Z.realN);
+}
+
+
+  
   /*
     if(rollCheck) {
     yourSerial.write(roll);
@@ -98,4 +115,4 @@ void Transmiter_Update() {
     rollCheck = true;
     }
   */
-}
+

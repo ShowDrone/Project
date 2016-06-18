@@ -100,14 +100,14 @@ void RollCheck() {
     }
 
     if (count == 1) {
-      X.realN = yourSerial.read();
-      sum += X.realN;
+      X.integer = yourSerial.read();
+      sum += X.integer;
       count++;
     }
     if (count == 2) {
-      X.integer = yourSerial.read();
-      X.integer /= 100;
-      sum += X.integer * 100;
+      X.realN = yourSerial.read();
+      X.realN /= 100;
+      sum += X.realN;
       count++;
     }
 
@@ -150,14 +150,14 @@ void PitchCheck() {
     }
 
     if (count == 1) {
-      Y.realN = yourSerial.read();
-      sum += Y.realN;
+      Y.integer = yourSerial.read();
+      sum += Y.integer;
       count++;
     }
     if (count == 2) {
-      Y.integer = yourSerial.read();
-      Y.integer /= 100;
-      sum += Y.integer * 100;
+      Y.realN = yourSerial.read();
+      Y.realN /= 100;
+      sum += Y.realN;
 
       count++;
     }
@@ -202,14 +202,14 @@ void YawCheck() {
     }
 
     if (count == 1) {
-      Z.realN =  yourSerial.read();
-      sum += Z.realN;
+      Z.integer =  yourSerial.read();
+      sum += Z.integer;
       count++;
     }
     if (count == 2) {
-      Z.integer = yourSerial.read();
-      Z.integer /= 100;
-      sum += Z.integer * 100;
+      Z.realN = yourSerial.read();
+      Z.realN /= 100;
+      sum += Z.realN;
       count++;
     }
 
@@ -271,6 +271,7 @@ void yourSerialreset() {
 // Yes time, output delay time = 2ms + ( 33 * 0.5 ) = 18.5ms / error range 1ms
 // Control, output delay time = 2ms + ( 48 * 0.5 ) = 26.5ms / error range 1ms
 void StatusPrint() {
+  Serial.print(" Currect / ");
   Serial.print(" roll_B:"); Serial.print(roll_B);
   Serial.print(" pitch_B:"); Serial.print(pitch_B);
   Serial.print(" yaw_B:"); Serial.print(yaw_B);
