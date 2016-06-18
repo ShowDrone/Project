@@ -89,11 +89,11 @@ void Transmiter_Update() {
 
 void StatusPrint() {
   Serial.print("X: ");
-  Serial.print(X.integer); Serial.print(" "); Serial.print(X.realN); 
+  Serial.print(X.integer); Serial.print(" "); Serial.print(X.realN/100); 
   Serial.print(" Y: ");
-  Serial.print(Y.integer); Serial.print(" "); Serial.print(Y.realN);
+  Serial.print(Y.integer); Serial.print(" "); Serial.print(Y.realN/100);
   Serial.print(" Z: ");
-  Serial.print(Z.integer); Serial.print(" "); Serial.println(Z.realN);
+  Serial.print(Z.integer); Serial.print(" "); Serial.println(Z.realN/100);
 }
 
 

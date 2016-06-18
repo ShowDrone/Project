@@ -5,8 +5,8 @@ AltSoftSerial yourSerial;
 double pitch_B, roll_B, yaw_B;
 
 struct Axis {
-  int realN;
-  double integer;
+  double realN;
+  int integer;
 };
 
 struct Axis X;
@@ -81,7 +81,7 @@ void StartingCheck() {
 
 void RollCheck() {
   int count = 0;
-  int sum = 0;
+  double sum = 0;
   while (yourSerial.available() > 0) {
 
     if (count == 0) {
@@ -112,27 +112,27 @@ void RollCheck() {
     }
 
     else if (count == 3) {
-      int Confirm = CheckSum(sum);
-      if (Confirm == 0) {
+      //int Confirm = CheckSum(sum);
+      //if (Confirm == 0) {
         PITCH = true;
         ROLL = false;
         roll_B = sum;
         break;
-      }
+      //}
 
-      else if (Confirm != 0) {
+      /*else if (Confirm != 0) {
         Starting = true;
         ROLL = false;
         FaildPrint(0x01);
         break;
-      }
+      }*/
     }
   }
 }
 
 void PitchCheck() {
   int count = 0;
-  int sum = 0;
+  double sum = 0;
   while (yourSerial.available() > 0) {
 
     if (count == 0) {
@@ -163,28 +163,28 @@ void PitchCheck() {
     }
 
     else if (count == 3) {
-      int Confirm = CheckSum(sum);
+      //int Confirm = CheckSum(sum);
 
-      if (Confirm == 0) {
+      //if (Confirm == 0) {
         YAW = true;
         ROLL = false;
         pitch_B = sum;
         break;
-      }
+      //}
 
-      else if (Confirm != 0) {
+      /*else if (Confirm != 0) {
         Starting = true;
         PITCH = false;
         FaildPrint(0x02);
         break;
-      }
+      }*/
     }
   }
 }
 
 void YawCheck() {
   int count = 0;
-  int sum = 0;
+  double sum = 0;
   while (yourSerial.available() > 0) {
 
     if (count == 0) {
@@ -214,21 +214,21 @@ void YawCheck() {
     }
 
     else if (count == 3) {
-      int Confirm = CheckSum(sum);
+      //int Confirm = CheckSum(sum);
 
-      if (Confirm == 0) {
+      //if (Confirm == 0) {
         Finish = true;
         YAW = false;
         yaw_B = sum;
         break;
-      }
+      //}
 
-      else if (Confirm != 0) {
+      /*else if (Confirm != 0) {
         Starting = true;
         YAW = false;
         FaildPrint(0x03);
         break;
-      }
+      }*/
     }
   }
 }
@@ -271,7 +271,13 @@ void yourSerialreset() {
 // Yes time, output delay time = 2ms + ( 33 * 0.5 ) = 18.5ms / error range 1ms
 // Control, output delay time = 2ms + ( 48 * 0.5 ) = 26.5ms / error range 1ms
 void StatusPrint() {
-  Serial.print(" Currect / ");
+
+
+  Serial.print("X.realN: "); Serial.print(X.realN);
+  Serial.print(" Y.realN: "); Serial.print(Y.realN);
+  Serial.print(" Z.realN: "); Serial.print(Z.realN);
+  
+  Serial.print(" / Currect / ");
   Serial.print(" roll_B:"); Serial.print(roll_B);
   Serial.print(" pitch_B:"); Serial.print(pitch_B);
   Serial.print(" yaw_B:"); Serial.print(yaw_B);
