@@ -10,10 +10,14 @@ struct Axis {
 
 void Transmiter_init() {
   yourSerial.begin(19200);
-
+  int8_t waitCheck = 1;
   while (1) {
     yourSerial.write('B');
     if (yourSerial.available()) {
+      if (waitCheck) {
+        Serial.println("Status_UART wait");
+        waitCheck = 0;
+      }
       int check = yourSerial.read();
       if (check == 'O') {
         Serial.println("Status_UART OK");
@@ -41,7 +45,7 @@ void Transmiter_Update() {
   X.integer = roll - (int)roll;
   X.realN = roll - X.integer;
   X.integer *= 100;
-  Serial.println((int)X.integer);
+  //Serial.println((int)X.integer);
 
   Y.integer = pitch - (int)pitch;
   Y.realN = pitch - Y.integer;
@@ -52,46 +56,46 @@ void Transmiter_Update() {
   Z.integer *= 100;
 
   yourSerial.write('S');
-  delayMicroseconds(100);
+  delayMicroseconds(130);
 
   yourSerial.write('X');
-  delayMicroseconds(100);
+  delayMicroseconds(130);
   yourSerial.write(X.realN);
-  delayMicroseconds(100);
+  delayMicroseconds(130);
   yourSerial.write((int)X.integer);
-  delayMicroseconds(100);
+  delayMicroseconds(130);
 
   yourSerial.write('Y');
-  delayMicroseconds(100);
+  delayMicroseconds(130);
   yourSerial.write(Y.realN);
-  delayMicroseconds(100);
+  delayMicroseconds(130);
   yourSerial.write((int)Y.integer);
-  delayMicroseconds(100);
+  delayMicroseconds(130);
 
   yourSerial.write('Z');
-  delayMicroseconds(100);
+  delayMicroseconds(130);
   yourSerial.write(Z.realN);
-  delayMicroseconds(100);
+  delayMicroseconds(130);
   yourSerial.write((int)Z.integer);
-  delayMicroseconds(100);
+  delayMicroseconds(130);
 
   yourSerial.write('F');
 
   /*
-  if(rollCheck) {
+    if(rollCheck) {
     yourSerial.write(roll);
     rollCheck = false;
     pitchCheck = true;
-  }
-  else if(pitchCheck) {
+    }
+    else if(pitchCheck) {
     yourSerial.write(pitch);
     pitchCheck = false;
     yawCheck = true;
-  }
-  else if(yawCheck) {
+    }
+    else if(yawCheck) {
     yourSerial.write(yaw);
     yawCheck = false;
     rollCheck = true;
-  }
+    }
   */
 }

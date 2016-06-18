@@ -29,6 +29,9 @@ BLDC_B 11
 // 로터 부분에 들어감
 
 void setup() {
+  
+  delay(500); // A가 먼저 켜지고 B가 켜져야 됨
+  
   Serial.begin(19200);
   
   AccelGyro_init();

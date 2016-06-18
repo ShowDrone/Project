@@ -15,9 +15,14 @@ struct Axis Z;
 
 void Status_UART_init() {
   yourSerial.begin(19200);
+  int8_t waitCheck = 1;
   while (1) {
     if (yourSerial.available()) {
       char Check = yourSerial.read();
+      if (waitCheck) {
+        Serial.println("Status_UART wait");
+        waitCheck = 0;
+      }
       if (Check == 'B') {
         yourSerial.write('O');
         delayMicroseconds(500);
@@ -54,7 +59,7 @@ void Status_UART_Update() {
     FinishCheck();
 
 
-  StatusPrint();
+  //StatusPrint();
 
   yourSerialreset();
 
@@ -82,7 +87,7 @@ void RollCheck() {
     if (count == 0) {
       char Check = yourSerial.read();
       if ( Check == 'X') {
-        Serial.println(" 2 ");
+        //Serial.println(" 2 ");
         count++;
       }
 
@@ -107,12 +112,11 @@ void RollCheck() {
     }
 
     else if (count == 3) {
-      ;
       int Confirm = CheckSum(sum);
       if (Confirm == 0) {
         PITCH = true;
         ROLL = false;
-        roll_B = X.realN + X.integer;
+        roll_B = sum;
         break;
       }
 
@@ -164,7 +168,7 @@ void PitchCheck() {
       if (Confirm == 0) {
         YAW = true;
         ROLL = false;
-        pitch_B = Y.realN + Y.integer;
+        pitch_B = sum;
         break;
       }
 
@@ -215,7 +219,7 @@ void YawCheck() {
       if (Confirm == 0) {
         Finish = true;
         YAW = false;
-        yaw_B = Z.realN + Z.integer;
+        yaw_B = sum;
         break;
       }
 
@@ -236,7 +240,7 @@ void FinishCheck() {
     char Check = yourSerial.read();
 
     if (Check == 'F') {
-      //StatusPrint();
+      StatusPrint();
       Finish = false;
       Starting = true;
     }
@@ -274,7 +278,7 @@ void StatusPrint() {
 }
 
 void FaildPrint(char Check) {
-  /*
+  
     if (Check == 0x00)
     Serial.print(" STARTING EROOR!!! ");
 
@@ -291,5 +295,5 @@ void FaildPrint(char Check) {
     Serial.print(" Finish ERROR!!! ");
 
     Serial.println();
-  */
+ 
 }
