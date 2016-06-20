@@ -11,8 +11,18 @@ void Control_UART_init() {
 }
 
 void Control_UART_Update() {
-  while (mySerial.available()) {
+
+  /*if (mySerial.available() < 1) {
+    buf[1] = 129;
+    buf[2] = 129;
+    buf[3] = 0;
+    buf[4] = 129;
+    Serial.println(" No control Data ");
+    Emergency = true;
+  }
+*/
 here:
+  while (mySerial.available()) {
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -40,15 +50,6 @@ here:
       buf[4] = Lastbuf[4];
     }
   }
-  if (mySerial.available() < 1) {
-    buf[1] = 129;
-    buf[2] = 129;
-    buf[3] = 0;
-    buf[4] = 129;
-    Emergency = true;
-  }
-
-  //Serialprint();
 
   if (!Loop) {
     for (int i = 0; i < 8; i++) {
@@ -56,6 +57,7 @@ here:
     }
   }
   Serialreset();
+  Serialprint();
 }
 
 void Serialreset() {

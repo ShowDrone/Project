@@ -58,7 +58,7 @@ void Transmiter_Update() {
   Z.integer = yaw - Z.realN;
   Z.realN *= 100;
 
-  StatusPrint();
+  //StatusPrint();
 
   yourSerial.write('S');
   delayMicroseconds(130);

@@ -240,7 +240,9 @@ void FinishCheck() {
     char Check = yourSerial.read();
 
     if (Check == 'F') {
-      StatusPrint();
+      
+      //StatusPrint(); // PRINT
+      
       Finish = false;
       Starting = true;
     }
@@ -285,7 +287,7 @@ void StatusPrint() {
 }
 
 void FaildPrint(char Check) {
-  
+ /* 
     if (Check == 0x00)
     Serial.print(" STARTING EROOR!!! ");
 
@@ -302,5 +304,5 @@ void FaildPrint(char Check) {
     Serial.print(" Finish ERROR!!! ");
 
     Serial.println();
- 
+ */
 }

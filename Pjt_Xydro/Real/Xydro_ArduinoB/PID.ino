@@ -56,7 +56,7 @@ int emergencySpeed = 0;
 
 void PID_Update() {
 
-  if (uartTime + 5 < millis()) {
+  if (uartTime + 10 < millis()) {
     Control_UART_Update();
     uartTime = millis();
   }

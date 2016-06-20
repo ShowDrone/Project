@@ -12,9 +12,18 @@ void Control_UART_init() {
 
 void Control_UART_Update() {
   int gotoCheck = 0;
+  
+  if ( mySerial.available() < 1) {
+    buf[1] = 129;
+    buf[2] = 129;
+    buf[3] = 0;
+    buf[4] = 129;
+    Serial.println(" No Control Data ");
+  }
+
+here: // [Goto A]
 
   while (mySerial.available()) {
-here: // [Goto A]
     for (int j = 0; j < 8; j++) {
       buf[j] = mySerial.read();
     }
@@ -27,7 +36,6 @@ here: // [Goto A]
       goto here;
 
       }*/
-
 
     if (Loop) {
       for (int i = 0; i < 8; i++) {
@@ -45,13 +53,6 @@ here: // [Goto A]
     if ((buf[4] > 176) || (buf[4] < 80))
       buf[4] = Lastbuf[4];
   }
-  if ( mySerial.available() < 1) {
-    buf[1] = 129;
-    buf[2] = 129;
-    buf[3] = 0;
-    buf[4] = 129;
-    //Serial.println(" No Control Data ");
-  }
 
   if (!Loop) {
     for (int i = 0; i < 8; i++)
@@ -61,7 +62,7 @@ here: // [Goto A]
   //here: // [Goto B]
 
   mySerialreset;
-  //Serialprint();
+  Serialprint();
 }
 
 void mySerialreset() {

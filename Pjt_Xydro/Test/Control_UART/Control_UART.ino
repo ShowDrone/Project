@@ -9,7 +9,7 @@ boolean Loop = true;
 int32_t time1 = 0;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(19200);
   mySerial.begin(19200);
 }
 
@@ -30,9 +30,9 @@ void loop() {
 
 void Update() {
 
-  if ( mySerial.available() < 1) {
+ /* if ( mySerial.available() < 1) {
     Serial.println("No control data");
-  }
+  }*/
 
   
 here: // [Goto A]
