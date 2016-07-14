@@ -30,6 +30,8 @@ void AccelGyro_init() {
       break;
     }
   }
+  accelGyroMag.getDLPFMode();
+  accelGyroMag.setDLPFMode(3);
 }
 
 void AccelGyro_Update() {
