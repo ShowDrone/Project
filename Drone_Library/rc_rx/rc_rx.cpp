@@ -28,9 +28,8 @@ Test with: Arduino Mega and Devention rx701
 #define max_high_time 1895 // [uS] Maximum expected high time
 #define min_high_time 1090 // [uS] Minimum expected high time
 
-volatile unsigned long CH1_t=0, CH1_delta=0, CH2_t=0, CH2_delta=0, CH3_t=0, CH3_delta=0, CH4_t=0, CH4_delta=0 ;
+volatile unsigned long CH1_t=0, CH1_delta=0, CH2_t=0, CH2_delta=0, CH3_t=0, CH3_delta=0, CH4_t=0, CH4_delta=0;
 float CH1,CH2,CH3,CH4;
-
 
 // Interrupt ISRs
 
@@ -95,10 +94,5 @@ void read_rc_rx(){
   CH2 = ((float)CH2_delta-(float)min_high_time)*100/(max_high_time-min_high_time);
   CH3 = ((float)CH3_delta-(float)min_high_time)*100/(max_high_time-min_high_time);
   CH4 = ((float)CH4_delta-(float)min_high_time)*100/(max_high_time-min_high_time);
-
 }
-
-
-
-
 

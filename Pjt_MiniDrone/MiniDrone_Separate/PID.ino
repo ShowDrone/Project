@@ -1,16 +1,16 @@
 
-#define BLDC_SPEED_MAX 255 //예시
+#define BLDC_SPEED_MAX 255 // 예시 값
 #define BLDC_SPEED_MIN 0
-#define DC_SPEED_MAX 100 //예시
+#define DC_SPEED_MAX 100 // 예시 값
 #define DC_SPEED_MIN 0
-#define PITCH_MIN -30 // 상보필터 값에 맞게 셋팅
-#define PITCH_MAX 30 // 
+#define PITCH_MIN -30 // pitch 값 범위 (for mapping)
+#define PITCH_MAX 30 
 #define ROLL_MIN -30
 #define ROLL_MAX 30
 #define YAW_MIN -20
 #define YAW_MAX 20
 #define PID_MAX 80 // 이 값으로 할지 -30~+30으로 할진 미정
-#define PID_MIN -80
+#define PID_MIN -80 // PID값 범위
 #define Motor1_A 2 // Direction_A            모터 변수 이름 의미
 #define Motor1_B 3 // Direction_B                   [전]
 #define Motor2_A 4 // Direction_A                 1번 모터
@@ -26,32 +26,48 @@
 #define BLDC_A 54 // Speed A0
 #define BLDC_B 55 // Speed A1
 
-double const PITCH_P = 0.85, PITCH_I = 0.1, PITCH_D = 0.15;
-double const ROLL_P = 1, ROLL_I = 0.05, ROLL_D = 1;
-double const YAW_P = 1, YAW_I = 0.05, YAW_D = 1;
+double const PITCH_P = 0.85, PITCH_I = 0.1, PITCH_D = 0.15; // Pitch PID 게인값
+double const ROLL_P = 1, ROLL_I = 0.05, ROLL_D = 1; // Roll PID 게인값
+double const YAW_P = 1, YAW_I = 0.05, YAW_D = 1; // Yaw PID 게인값
+
+// 순서대로 오차값, 이전오차값(previous), P제어의 결과값 변수, I제어의 결과값 변수, D제어의 결과값 변수, PID값
 double PITCH_ERR, PITCH_PERR, PITCH_ERR_P, PITCH_ERR_I = 0, PITCH_ERR_D, PITCH_PID;
 double ROLL_ERR, ROLL_PERR, ROLL_ERR_P, ROLL_ERR_I = 0, ROLL_ERR_D, ROLL_PID;
 double YAW_ERR, YAW_ERR_P, YAW_ERR_I = 0, YAW_PI;
-double PITCH_PRE, roll_PRE;
+
+// PITCH, ROLL PID의 이전 값을 담아두는 변수
+double PITCH_PRE, ROLL_PRE;
+
+// Ctl = Control, 조작 값을 담아두는 변수
 int16_t PITCH_Ctl, roll_Ctl, yaw_Ctl;
 int16_t PITCH_Ctl_Last, roll_Ctl_Last, yaw_Ctl_Last;
+
+// 정방향, 역방향을 구분하기 위한 변수
 boolean Motor1_Status = 0, Motor2_Status = 0;
 boolean Motor3_Status = 0, Motor4_Status = 0;
-int BLDC_Speed;
-int Motor1_Speed, Motor2_Speed;
-int Motor3_Speed, Motor4_Speed;
-int Motor5_Speed, Motor6_Speed;
+
+// Motor의 A, B스피드 PID연산을 위한
 int Motor1_A_Speed, Motor1_B_Speed;
 int Motor2_A_Speed, Motor2_B_Speed;
 int Motor3_A_Speed, Motor3_B_Speed;
 int Motor4_A_Speed, Motor4_B_Speed;
 int Motor5_A_Speed, Motor5_B_Speed;
 int Motor6_A_Speed, Motor6_B_Speed;
+
+// Motor의 최종스피드
+int Motor1_Speed, Motor2_Speed;
+int Motor3_Speed, Motor4_Speed;
+int Motor5_Speed, Motor6_Speed;
+
+int BLDC_Speed; // BLDC 모터 스피드
+
+// Emergency용 변수
 boolean Emergency = false;
-int16_t UartTime = 0;
 int16_t EmergencyTime = 0;
 int16_t EmergencySpeed = 0;
 
+
+int16_t UartTime = 0; // 조종 데이터를 5ms마다 읽어들이게끔 확인하는 변수
 
 void PID_init() {
   pinMode(Motor1_B, OUTPUT);
@@ -73,19 +89,24 @@ void PID_init() {
 }
 
 void PID_Update() {
+
+  // 카메라보드에서 5ms마다 데이터를 송신해주므로 5ms마다 조종 데이터를 수신
   if (UartTime + 5 < millis()) {
     Control_UART_Update();
     UartTime = millis();
   }
 
+  // 매핑
   PITCH_Ctl = map(buf[2], 88, 168, PITCH_MIN, PITCH_MAX);
   roll_Ctl = map(buf[1], 88, 168, ROLL_MIN, ROLL_MAX);
   yaw_Ctl = map(buf[4], 70, 176, YAW_MIN, YAW_MAX);
   // buf[3]은 mapping할 필요X, 읽어들이는 값 자체가 8비트
 
+  // 응급 상황이 아닌 경우 BLDC스피드는 buf[3]값 그대로
   if (Emergency == false)
     BLDC_Speed = buf[3];
 
+  // 응급 상황일 경우 속도를 줄여나감
   if (Emergency == true) {
     if (BLDC_Speed >= 0) {
       if (BLDC_Speed >= 30)
@@ -99,6 +120,7 @@ void PID_Update() {
     }
   }
 
+  // pitch, roll, yaw값들이 범위값을 벗어날 경우 이전 값을 대입
   if (PITCH_Ctl < PITCH_MIN || PITCH_Ctl > PITCH_MAX) {
     PITCH_Ctl = PITCH_Ctl_Last;
   }
@@ -113,8 +135,10 @@ void PID_Update() {
   roll_Ctl_Last = roll_Ctl;
   yaw_Ctl_Last = yaw_Ctl;
 
+  // Pitch, Roll, Yaw값을 최신의 것으로 업데이트
   AccelGyro_Update();
 
+  // 응급 상황일 경우 기체를 수평으로.
   if (Emergency == true) {
     pitch = 0;
     roll = 0;
@@ -133,13 +157,13 @@ void PID_Update() {
 
   //ROLL
   ROLL_ERR = roll_Ctl - roll;
-  ROLL_PERR = (roll - roll_PRE) / DT;
+  ROLL_PERR = (roll - ROLL_PRE) / DT;
   ROLL_ERR_P = ROLL_ERR * ROLL_P;
   ROLL_ERR_I = ROLL_ERR_I + (ROLL_ERR * ROLL_I) * DT;
   Limit_I(&ROLL_ERR_I);
   ROLL_ERR_D = ROLL_PERR * ROLL_D;
   ROLL_PID = ROLL_ERR_P + ROLL_ERR_I + ROLL_ERR_D;
-  roll_PRE = roll;
+  ROLL_PRE = roll;
 
   //YAW
   YAW_ERR = yaw_Ctl - yaw;
@@ -150,7 +174,6 @@ void PID_Update() {
 
   Limit_BLDC(&BLDC_Speed);
 
-  // 기압센서, 초음파센서로 높이 측정해서 랜딩기어까지 작동시키게끔 라즈베리파이에서 코딩
   if (BLDC_Speed <= 10) // BLDC가 돌아가는 최소 신호값으로 지정, 10은 임의값
     MOT_Stability(); // 로터부 수평
 
@@ -277,20 +300,21 @@ void MOT_Mapping() {
     Motor4_Status = false;
 }
 
-
 void MOT_Stability() {
 
   // DC모터를 수평으로 돌리게끔 라즈베리파이에서 코딩
   
 }
 
+// 계산된 DC모터스피드값이 정해진 DC모터스피드 값의 범위를 벗어나지 않도록 한계 지정
 void Limit_DC(int *value) {  // -80~+80으로 할지 -20~+20으로 할지 미정(테스트결과에따라)
-  if (*value >= PID_MAX)
-    *value = PID_MAX;
-  else if (*value <= PID_MIN)
-    *value = PID_MIN;
+  if (*value >= DC_SPEED_MAX)
+    *value = DC_SPEED_MAX;
+  else if (*value <= DC_SPEED_MIN)
+    *value = DC_SPEED_MIN;
 }
 
+// I게인 값이 계속 누적되서 커지지 않도록 한계값 설정
 void Limit_I(double *value) {
   if (*value >= 100)
     *value = 100;
@@ -298,6 +322,7 @@ void Limit_I(double *value) {
     *value = -100;
 }
 
+// BLDC의 값이 BLDC_Speed값을 벗어나지 않도록 한계 지정
 void Limit_BLDC(int *value) {
   if (*value >= BLDC_SPEED_MAX)
     *value = BLDC_SPEED_MAX;

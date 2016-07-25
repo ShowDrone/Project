@@ -1,6 +1,4 @@
 
-// 속도 제어 BLDC 2개 / 방향 제어 DC 4개 / 랜딩 기어 2개
-
 void setup() {
 
   Serial.begin(19200);
@@ -14,7 +12,7 @@ int time_pre = 0;
 
 void loop() {
 
-  int time = millis() - time_pre;
+  int time = millis() - time_pre; // 한 루프를 도는데 걸리는 시간 측정
   time_pre = millis();
   //Serial.print("time: "); Serial.print(time);
   PID_Update();
