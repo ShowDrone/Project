@@ -4,20 +4,16 @@
 
 MPU9150 accelGyroMag;
 
-int16_t AcX, AcY, AcZ;
-int16_t GyX, GyY, GyZ;
+int16_t AcX, AcY, AcZ; // I2C통신으로 받아오는 Accel X, Y, Z값 변수
+int16_t GyX, GyY, GyZ; // I2C통신으로 받아오는 Gyro X, Y, Z값 변수
 
-double rollGyro = 0;
-double pitchGyro = 0;
-double yawGyro = 0;
-double rollAcc = 0;
-double pitchAcc = 0;
-double yawAcc = 0;
-double pitch = 0;
-double roll = 0;
-double yaw = 0;
-float DT = 0.01;
+double rollGyro = 0, pitchGyro = 0, yawGyro = 0; // 각속도용 변수 
+double rollAcc = 0, pitchAcc = 0, yawAcc = 0; // 가속도용 변수
+double roll = 0, pitch = 0, yaw = 0; // 각속도, 가속도로 뽑아낸 최종 값의 변수
+float DT = 0.01; // 적분하는 시간 
 
+
+// AccelGyro 
 void AccelGyro_init() {
   Wire.begin();
   accelGyroMag.initialize();
@@ -28,11 +24,17 @@ void AccelGyro_init() {
       delay(500);
       break;
     }
-  }
+  } 
+  //             Accel                    Gyro
+  // DLPF_CFG  Bandwidth  Delay  Bandwidth  Delay Samplerate
+  //     3      44Hz,  4.0ms    |   42Hz,   4.8ms,  1kHz
   accelGyroMag.setDLPFMode(3);
 }
 
+
+// AccelGyro값을 받아오고 자이로는 각속도, 엑셀은 가속도로 변환 뒤 상보 필터를 사용하여 roll, pitch, yaw를 뽑아냄.
 void AccelGyro_Update() {
+  
   accelGyroMag.getMotion6(&AcX, &AcY, &AcZ, &GyX, &GyY, &GyZ);
 
   //가속도 계산 Rad to Deg
