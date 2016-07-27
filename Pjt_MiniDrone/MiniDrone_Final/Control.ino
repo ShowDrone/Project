@@ -1,10 +1,13 @@
 
 // UART통신으로 조종 데이터를 읽어들이는 탭
+// 이 소스는 박사님이 보여주신 컨트롤 보드용 소스이므로 이번 드론에선 저번에 카이스트에 보여주신 라즈베리파이의 소스를 쓰시면 될 것 같습니다
 
 #include<SoftwareSerial.h>
 SoftwareSerial mySerial(50, 51);
 
 int buf[8] = {0,}; // 카메라보드로부터 읽어들일 8개의 변수
+// buf1[Aileron], Buf2[Elevator], buf3[Throttle], buf4[Rudder], buf5[Checksum], 나머지는 사용x
+
 int Lastbuf[8] = {0,}; // 카메라보드로부터 읽어들 8개의 변수의 이전 값
 
 boolean Loop = true; // Control_UART_Update가 실행될 때 if문으로 딱 한 번만 처리해주기위한 변수

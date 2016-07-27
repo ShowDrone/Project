@@ -1,4 +1,3 @@
-
 #include "Wire.h"
 #include "I2Cdev.h"
 #include "MPU9150.h"
@@ -8,7 +7,7 @@ MPU9150 accelGyroMag;
 int16_t AcX, AcY, AcZ; // I2C통신으로 받아오는 Accel X, Y, Z값 변수
 int16_t GyX, GyY, GyZ; // I2C통신으로 받아오는 Gyro X, Y, Z값 변수
 
-double rollGyro = 0, ptchGyro = 0, yawGyro = 0; // 각속도용 변수 
+double rollGyro = 0, pitchGyro = 0, yawGyro = 0; // 각속도용 변수 
 double rollAcc = 0, pitchAcc = 0, yawAcc = 0; // 가속도용 변수
 double roll = 0, pitch = 0, yaw = 0; // 각속도, 가속도로 뽑아낸 최종 값의 변수
 float DT = 0.01; // 적분하는 시간 

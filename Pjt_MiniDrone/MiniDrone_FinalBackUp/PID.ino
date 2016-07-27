@@ -4,13 +4,14 @@
 #define DC_SPEED_MAX 100 // 예시 값
 #define DC_SPEED_MIN 0
 #define PITCH_MIN -30 // pitch 값 범위 (for mapping)
-#define PITCH_MAX 30 
+#define PITCH_MAX 30
 #define ROLL_MIN -30
 #define ROLL_MAX 30
 #define YAW_MIN -20
 #define YAW_MAX 20
 #define PID_MAX 80 // 이 값으로 할지 -30~+30으로 할진 미정
 #define PID_MIN -80 // PID값 범위
+#define LANDING_TIME 5000 // ms단위이며, 랜딩 기어가 접히고 펴지는데 걸리는 시간(임의 값 테스트 필요)
 #define Motor1_A 2 // Direction_A            모터 변수 이름 의미
 #define Motor1_B 3 // Direction_B                   [전]
 #define Motor2_A 4 // Direction_A                 1번 모터
@@ -46,22 +47,23 @@ int16_t PITCH_Ctl_Last, roll_Ctl_Last, yaw_Ctl_Last;
 boolean Motor1_Status = 0, Motor2_Status = 0;
 boolean Motor3_Status = 0, Motor4_Status = 0;
 
-// Motor의 A, B스피드 PID연산을 위한
+// Motor1~5까지의 A, B스피드 PID연산을 위한
 int Motor1_A_Speed, Motor1_B_Speed;
 int Motor2_A_Speed, Motor2_B_Speed;
 int Motor3_A_Speed, Motor3_B_Speed;
 int Motor4_A_Speed, Motor4_B_Speed;
-int Motor5_A_Speed, Motor5_B_Speed;
-int Motor6_A_Speed, Motor6_B_Speed;
 
 // Motor의 최종스피드
 int Motor1_Speed, Motor2_Speed;
 int Motor3_Speed, Motor4_Speed;
-int Motor5_Speed, Motor6_Speed;
+int Landing_Speed = DC_SPEED_MAX;
 
 int BLDC_Speed; // BLDC 모터 스피드
 
-// Emergency용 변수
+// Landing Gear의 상황용 변수
+boolean Landing_Status = true; // 드론은 비행할 때 빼고 랜딩기어가 항상 On되어있다.
+
+// Emergency용 변수, 굳이 포팅 필요X
 boolean Emergency = false;
 int16_t EmergencyTime = 0;
 int16_t EmergencySpeed = 0;
@@ -84,8 +86,6 @@ void PID_init() {
   pinMode(Motor6_A, OUTPUT);
   pinMode(BLDC_A, OUTPUT);
   pinMode(BLDC_B, OUTPUT);
-  //모터 안정화
-  MOT_Stability();
 }
 
 void PID_Update() {
@@ -156,6 +156,8 @@ void PID_Update() {
   PITCH_PRE = pitch;
 
   //ROLL
+  // 현재 테스트시에는 ROLL의 목표 값을 0으로 두지만 차후엔 모드를 구분해서 조종 데이터를 목표 값으로도 둘 예정
+  roll_Ctl = 0;
   ROLL_ERR = roll_Ctl - roll;
   ROLL_PERR = (roll - ROLL_PRE) / DT;
   ROLL_ERR_P = ROLL_ERR * ROLL_P;
@@ -177,17 +179,7 @@ void PID_Update() {
   if (BLDC_Speed <= 10) // BLDC가 돌아가는 최소 신호값으로 지정, 10은 임의값
     MOT_Stability(); // 로터부 수평
 
-  if (YAW_PI < 0) {
-    Motor1_A_Speed = 0;
-    Motor2_A_Speed = 0;
-    Motor3_A_Speed = 0;
-    Motor4_A_Speed = 0;
-    Motor1_B_Speed = YAW_PI;
-    Motor2_B_Speed = YAW_PI;
-    Motor3_B_Speed = YAW_PI;
-    Motor4_B_Speed = YAW_PI;
-  }
-  else {
+  if (YAW_PI > 0) {
     Motor1_A_Speed = YAW_PI;
     Motor2_A_Speed = YAW_PI;
     Motor3_A_Speed = YAW_PI;
@@ -197,27 +189,38 @@ void PID_Update() {
     Motor3_B_Speed = 0;
     Motor4_B_Speed = 0;
   }
-  if (PITCH_PID < 0) {
-    Motor2_B_Speed += PITCH_PID;
-    Motor4_B_Speed += PITCH_PID;
-  }
   else {
+    Motor1_A_Speed = 0;
+    Motor2_A_Speed = 0;
+    Motor3_A_Speed = 0;
+    Motor4_A_Speed = 0;
+    Motor1_B_Speed = YAW_PI;
+    Motor2_B_Speed = YAW_PI;
+    Motor3_B_Speed = YAW_PI;
+    Motor4_B_Speed = YAW_PI;
+  }
+  if (PITCH_PID > 0) {
     Motor2_A_Speed += PITCH_PID;
     Motor4_A_Speed += PITCH_PID;
   }
-  if (ROLL_PID < 0) {
-    Motor1_B_Speed += ROLL_PID;
-    Motor3_B_Speed += ROLL_PID;
-  }
   else {
+    Motor2_B_Speed += PITCH_PID;
+    Motor4_B_Speed += PITCH_PID;
+  }
+  if (ROLL_PID > 0) {
     Motor1_A_Speed += ROLL_PID;
     Motor3_A_Speed += ROLL_PID;
+  }
+  else {
+    Motor1_B_Speed += ROLL_PID;
+    Motor3_B_Speed += ROLL_PID;
   }
 
   Motor1_Speed = Motor1_A_Speed + Motor1_B_Speed;
   Motor2_Speed = Motor2_A_Speed + Motor2_B_Speed;
   Motor3_Speed = Motor3_A_Speed + Motor3_B_Speed;
   Motor4_Speed = Motor4_A_Speed + Motor4_B_Speed;
+
   Limit_DC(&Motor1_Speed);
   Limit_DC(&Motor2_Speed);
   Limit_DC(&Motor3_Speed);
@@ -230,44 +233,46 @@ void PID_Update() {
 
 void MOT_Update() {
   // BLDC Part ESC - BLDC를 역으로 연결해 정방향, 역방향 사용
+  // 라즈베리파이에선 Servo모터 라이브러리를 사용하는게 안정성이 높아보임
   analogWrite(BLDC_A, BLDC_Speed);
   analogWrite(BLDC_B, BLDC_Speed);
 
   // DC Part 라즈베리파이에서 어떤 함수로 구동할지 선택
+  // DC모터를 정, 방향으로 돌릴 시 어느 방향으로 돌아갈지 모르므로 임의로 지정, 테스트 후 바꿔야 함.
   if (Motor1_Status == true) {
-    analogWrite(Motor1_A, Motor1_Speed);
-    analogWrite(Motor1_B, 0);
+    digitalWrite(Motor1_A, Motor1_Speed);
+    digitalWrite(Motor1_B, 0);
   }
   else {
-    analogWrite(Motor1_B, Motor1_Speed);
-    analogWrite(Motor1_A, 0);
+    digitalWrite(Motor1_B, Motor1_Speed);
+    digitalWrite(Motor1_A, 0);
   }
-  
+
   if (Motor2_Status == true) {
-    analogWrite(Motor2_A, Motor2_Speed);
-    analogWrite(Motor2_B, 0);
+    digitalWrite(Motor2_A, Motor2_Speed);
+    digitalWrite(Motor2_B, 0);
   }
   else {
-    analogWrite(Motor2_B, Motor2_Speed);
-    analogWrite(Motor2_A, 0);
+    digitalWrite(Motor2_B, Motor2_Speed);
+    digitalWrite(Motor2_A, 0);
   }
-  
+
   if (Motor3_Status == true) {
-    analogWrite(Motor3_A, Motor3_Speed);
-    analogWrite(Motor3_B, 0);
+    digitalWrite(Motor3_A, Motor3_Speed);
+    digitalWrite(Motor3_B, 0);
   }
   else {
-    analogWrite(Motor3_B, Motor3_Speed);
-    analogWrite(Motor3_A, 0);
+    digitalWrite(Motor3_B, Motor3_Speed);
+    digitalWrite(Motor3_A, 0);
   }
-  
+
   if (Motor4_Status == true) {
-    analogWrite(Motor4_A, Motor4_Speed);
-    analogWrite(Motor4_B, 0);
+    digitalWrite(Motor4_A, Motor4_Speed);
+    digitalWrite(Motor4_B, 0);
   }
   else {
-    analogWrite(Motor4_B, Motor4_Speed);
-    analogWrite(Motor4_A, 0);
+    digitalWrite(Motor4_B, Motor4_Speed);
+    digitalWrite(Motor4_A, 0);
   }
 }
 
@@ -278,7 +283,6 @@ void MOT_Mapping() {
   Motor4_Speed = map(Motor4_Speed, PID_MIN, PID_MAX, DC_SPEED_MIN, DC_SPEED_MAX);
 
   // 아래 코드는 DC모터의 정방향, 역방향 구분 용도
-
   if (Motor1_Speed > 0)
     Motor1_Status = true;
   else if (Motor1_Speed < 0)
@@ -300,18 +304,31 @@ void MOT_Mapping() {
     Motor4_Status = false;
 }
 
-void MOT_Stability() {
+// 비행 테스트시에는 토글랜딩으로
+void MOT_Landing() {
+  // 코딩하신 앱으로 Control_UART를 갈아엎어야 하니 조종 데이터 코딩을 수정하시면서 스마트폰에서 랜딩기어 On/Off 데이터를 수신하는 기능 추가부탁드립니다
 
-  // DC모터를 수평으로 돌리게끔 라즈베리파이에서 코딩
-  
+  // 랜딩 기어 토글 데이터가 들어와 Lading_Status가 false로 바뀐 경우
+  if (Landing_Status == false) { // 임의 값
+    digitalWrite(Motor5_A, Landing_Speed);
+    digitalWrite(Motor5_B, 0);
+    digitalWrite(Motor6_A, Landing_Speed);
+    digitalWrite(Motor6_B, 0);
+  }
+  else {
+    digitalWrite(Motor5_A, 0);
+    digitalWrite(Motor5_B, Landing_Speed);
+    digitalWrite(Motor6_A, 0);
+    digitalWrite(Motor6_B, Landing_Speed);
+  }
 }
 
 // 계산된 DC모터스피드값이 정해진 DC모터스피드 값의 범위를 벗어나지 않도록 한계 지정
 void Limit_DC(int *value) {  // -80~+80으로 할지 -20~+20으로 할지 미정(테스트결과에따라)
-  if (*value >= DC_SPEED_MAX)
-    *value = DC_SPEED_MAX;
-  else if (*value <= DC_SPEED_MIN)
-    *value = DC_SPEED_MIN;
+  if (*value >= PID_MAX)
+    *value = PID_MAX;
+  else if (*value <= PID_MIN)
+    *value = PID_MIN;
 }
 
 // I게인 값이 계속 누적되서 커지지 않도록 한계값 설정
@@ -329,3 +346,4 @@ void Limit_BLDC(int *value) {
   else if (*value <= BLDC_SPEED_MIN)
     *value = BLDC_SPEED_MIN;
 }
+
