@@ -5,7 +5,7 @@
 #define LandingMotor2_A 12 // LANDING_A
 #define LandingMotor2_B 13 // LANDING_B
 
-boolean Landing_Status = true; // 드론은 비행할 때 빼고 랜딩기어가 항상 On
+boolean Landing_Status = true; // 드론은 비행할 때 빼고 랜딩기어가 항상 On(펴짐 상태)
 boolean Landing_Start = false; // 랜딩 기어의 접고 펴짐을 알리는 신호
 boolean Landing_Once = false; // 한 번만 실행하게끔 하는 용도
 int Landing_LoopTime = 0; // Landing_Start를 5초 동안만 동작하게하는 함수
@@ -48,19 +48,19 @@ void Landing_Check() {
 
 /*
  * Status가 false일 땐 정방향, true일 땐 역방향으로 돌게 만들었습니다.
- * 랜딩 기어가 어떻게 작동할지 테스트를 한 후 정방향, 역방향 수정이 필요합니다.
+ * 랜딩 기어 모터: 정방향 이륙(접힘), 역방향 착륙(펴짐)
  */
 void Landing_Update() {
   if (Landing_Status == false) {
-    digitalWrite(LandingMotor1_A, Landing_Speed);
-    digitalWrite(LandingMotor1_B, 0);
-    digitalWrite(LandingMotor2_A, Landing_Speed);
-    digitalWrite(LandingMotor2_B, 0);
-  }
-  else {
     digitalWrite(LandingMotor1_A, 0);
     digitalWrite(LandingMotor1_B, Landing_Speed);
     digitalWrite(LandingMotor2_A, 0);
     digitalWrite(LandingMotor2_B, Landing_Speed);
+  }
+  else {
+    digitalWrite(LandingMotor1_A, Landing_Speed);
+    digitalWrite(LandingMotor1_B, 0);
+    digitalWrite(LandingMotor2_A, Landing_Speed);
+    digitalWrite(LandingMotor2_B, 0);    
   }
 }

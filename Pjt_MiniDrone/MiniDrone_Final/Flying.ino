@@ -111,7 +111,6 @@ void MOT_Update() {
   analogWrite(BLDC_B, BLDC_Speed);
 
   // DC Part 라즈베리파이에서 어떤 함수로 구동할지 선택
-  // DC모터를 정, 방향으로 돌릴 시 어느 방향으로 돌아갈지 모르므로 임의로 지정, 테스트 후 바꿔야 함.
   if (Motor1_Status == true) {
     digitalWrite(Motor1_A, Motor1_Speed);
     digitalWrite(Motor1_B, 0);
