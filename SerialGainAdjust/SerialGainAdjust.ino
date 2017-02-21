@@ -17,6 +17,7 @@ void setup() {
 }
 
 void loop() {
+  updatePIDgain();
 }
 
 void updatePIDgain() {
