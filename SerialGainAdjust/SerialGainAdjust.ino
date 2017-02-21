@@ -13,6 +13,7 @@ double ROLL_INNER_PGAIN = 1, ROLL_OUTER_PGAIN = 1, ROLL_IGAIN = 0, ROLL_DGAIN = 
 double ROLL_IN_P = 0, ROLL_IN_I = 0, ROLL_IN_D = 0;
 
 void setup() {
+  Serial.begin(9600);
 }
 
 void loop() {
